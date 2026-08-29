@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>記事検索 ― VOICE OF PRESIDENT</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@400;600;800&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300&family=Zen+Kaku+Gothic+New:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  body { margin:0; background:#F7F4EF; color:#1B1614; font-family:'Zen Kaku Gothic New',sans-serif; -webkit-font-smoothing:antialiased; }
+  a { color:#8E1D22; text-decoration:none; }
+  header { display:flex; align-items:center; justify-content:space-between; padding:26px 56px; border-bottom:1px solid rgba(27,22,20,.1); }
+  main { padding:120px 56px; text-align:center; }
+  h1 { font-family:'Shippori Mincho',serif; font-weight:600; font-size:32px; letter-spacing:.08em; }
+  p { color:rgba(27,22,20,.6); }
+</style>
+</head>
+<body>
+<header>
+  <span style="font-family:'Cormorant Garamond',serif; font-size:21px; letter-spacing:.3em; color:#8E1D22;">VOICE OF PRESIDENT</span>
+  <a href="index.html" style="font-size:12.5px; letter-spacing:.14em; color:rgba(27,22,20,.7);">トップへ戻る</a>
+</header>
+<main>
+  <h1>記事検索</h1>
+  <p id="q-result">このページは準備中です。近日公開予定です。</p>
+</main>
+<script>
+  const q = new URLSearchParams(location.search).get('q');
+  if (q) document.getElementById('q-result').textContent = '「' + q + '」の検索結果ページは準備中です。';
+</script>
+</body>
+</html>

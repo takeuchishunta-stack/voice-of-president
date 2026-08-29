@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>VOICE OF PRESIDENT ― 経営者に、聞く。</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@400;600;800&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300&family=Zen+Kaku+Gothic+New:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  body { margin:0; background:#F7F4EF; color:#1B1614; -webkit-font-smoothing:antialiased; }
+  a { color:#8E1D22; text-decoration:none; }
+  a:hover { color:#B08A4A; }
+  @keyframes vopKb { from { transform:scale(1.03); } to { transform:scale(1.14); } }
+  @keyframes vopMarquee { from { transform:translateX(0); } to { transform:translateX(-50%); } }
+  @keyframes vopSheen { 0% { background-position:-140% 0; } 60%,100% { background-position:240% 0; } }
+  #vop-shelf { scrollbar-width:none; -ms-overflow-style:none; }
+  #vop-shelf::-webkit-scrollbar { display:none; }
+  .vop-cta:hover { background:#7A171B !important; }
+  .vop-outline:hover { border-color:#8E1D22 !important; }
+</style>
+</head>
+<body>
+
+<section style="padding:0; display:flex; flex-direction:column; font-family:'Zen Kaku Gothic New',sans-serif; background:#F7F4EF; overflow-x:hidden;">
+  <div id="vop-scaler" style="width:1240px; transform-origin:top left; margin:0 auto;">
+  <div id="vop-page" style="display:flex; flex-direction:column; width:1240px;">
+
+    <div style="width:1240px; background:#FFFFFF; overflow:hidden; position:relative;">
+
+      <!-- HEADER -->
+      <header style="display:flex; align-items:center; justify-content:space-between; padding:26px 56px; border-bottom:1px solid rgba(27,22,20,.1); background:#FFFFFF; position:relative; z-index:4;">
+        <div style="display:flex; align-items:baseline; gap:16px;">
+          <span style="font-family:'Cormorant Garamond',serif; font-size:21px; letter-spacing:.3em; color:#8E1D22;">VOICE OF PRESIDENT</span>
+          <span style="font-family:'Shippori Mincho',serif; font-size:11px; letter-spacing:.34em; color:rgba(27,22,20,.5);">経営者に、聞く。</span>
+        </div>
+        <div style="display:flex; align-items:center; gap:28px; white-space:nowrap;">
+          <form id="w-search" action="search.html" method="get" style="display:flex; align-items:center; gap:10px; border-bottom:1px solid rgba(27,22,20,.28); padding:0 2px 7px;">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="rgba(27,22,20,.5)" stroke-width="2"><circle cx="10.5" cy="10.5" r="7"></circle><line x1="16" y1="16" x2="22" y2="22"></line></svg>
+            <input name="q" placeholder="記事を検索" style="width:150px; border:0; outline:0; background:transparent; font-family:'Zen Kaku Gothic New',sans-serif; font-size:12.5px; letter-spacing:.1em; color:#1B1614;">
+          </form>
+          <nav style="display:flex; gap:30px; font-size:12.5px; letter-spacing:.14em; color:rgba(27,22,20,.7);"><a href="archive.html" style="color:inherit;">連載一覧</a><span>会社概要</span><span style="color:#8E1D22;">お問い合わせ</span></nav>
+        </div>
+      </header>
+
+      <!-- HERO : 直近5本を10秒ごとに切替 -->
+      <div id="w-hero-stage" style="position:relative; height:700px; background:#FFFFFF; overflow:hidden;">
+
+        <div data-hero style="position:absolute; inset:0; display:grid; grid-template-columns:1fr 520px; opacity:1; transition:opacity 1.1s ease;">
+          <span style="position:absolute; left:40px; top:30px; font-family:'Cormorant Garamond',serif; font-size:150px; line-height:.84; letter-spacing:.02em; color:transparent; -webkit-text-stroke:1px rgba(142,29,34,.14); pointer-events:none; z-index:1;">VOL<br>009</span>
+          <div style="position:relative; z-index:2; padding:104px 56px; display:flex; flex-direction:column; justify-content:center; gap:24px; min-width:0;">
+            <div style="display:flex; align-items:center; gap:16px; font-family:'Cormorant Garamond',serif; font-size:13px; letter-spacing:.34em; color:#B08A4A; white-space:nowrap;"><span>VOL.009</span><span style="width:40px; height:1px; background:#B08A4A;"></span><span style="color:rgba(27,22,20,.45);">CAREER SUPPORT</span></div>
+            <h1 style="margin:0; font-family:'Shippori Mincho',serif; font-weight:600; font-size:54px; line-height:1.54; letter-spacing:.05em; color:#1B1614;">「自分の名前で<br><span style="color:#8E1D22;">勝負</span>したい」</h1>
+            <p style="margin:0; max-width:470px; font-size:14.5px; line-height:2.25; color:rgba(27,22,20,.66);">20代を中心とした転職支援、キャリアコーチング、講演。野球からキャリア支援へたどり着くまで。</p>
+            <div style="display:flex; align-items:center; gap:14px; font-size:12.5px; letter-spacing:.12em; color:rgba(27,22,20,.55);"><span style="flex:none; width:22px; height:1px; background:rgba(27,22,20,.3);"></span><span>GLOW SHIFT 代表 ／ 遠藤 靖浩</span></div>
+            <a href="article.html?id=endo" style="display:inline-flex; align-items:center; white-space:nowrap; align-self:flex-start; margin-top:12px; font-size:12.5px; letter-spacing:.2em; color:#FFFFFF; background:#8E1D22; padding:18px 32px;" class="vop-cta">記事を読む →</a>
+          </div>
+          <div style="position:relative; overflow:hidden; border-left:38px solid #8E1D22; min-width:0;">
+            <div style="position:absolute; inset:-8%; animation:vopKb 26s ease-in-out infinite alternate;"><img src="images/endo-hero.jpg" alt="遠藤 靖浩" style="width:100%; height:100%; object-fit:cover; object-position:50% 12%;"></div>
+          </div>
+        </div>
+
+        <div data-hero style="position:absolute; inset:0; display:grid; grid-template-columns:1fr 520px; opacity:0; transition:opacity 1.1s ease;">
+          <span style="position:absolute; left:40px; top:30px; font-family:'Cormorant Garamond',serif; font-size:150px; line-height:.84; letter-spacing:.02em; color:transparent; -webkit-text-stroke:1px rgba(142,29,34,.14); pointer-events:none; z-index:1;">VOL<br>008</span>
+          <div style="position:relative; z-index:2; padding:104px 56px; display:flex; flex-direction:column; justify-content:center; gap:24px; min-width:0;">
+            <div style="display:flex; align-items:center; gap:16px; font-family:'Cormorant Garamond',serif; font-size:13px; letter-spacing:.34em; color:#B08A4A; white-space:nowrap;"><span>VOL.008</span><span style="width:40px; height:1px; background:#B08A4A;"></span><span style="color:rgba(27,22,20,.45);">PRINTING</span></div>
+            <h1 style="margin:0; font-family:'Shippori Mincho',serif; font-weight:600; font-size:54px; line-height:1.54; letter-spacing:.05em; color:#1B1614;">「現状維持は<br><span style="color:#8E1D22;">衰退</span>」</h1>
+            <p style="margin:0; max-width:470px; font-size:14.5px; line-height:2.25; color:rgba(27,22,20,.66);">着任初日に最大の取引先を失った。40年続く印刷会社に、2本目の柱を据えるまでの10年。</p>
+            <div style="display:flex; align-items:center; gap:14px; font-size:12.5px; letter-spacing:.12em; color:rgba(27,22,20,.55);"><span style="flex:none; width:22px; height:1px; background:rgba(27,22,20,.3);"></span><span>株式会社アイエルシー 代表取締役 ／ 今西 俊明</span></div>
+            <a href="article.html?id=imanishi" style="display:inline-flex; align-items:center; white-space:nowrap; align-self:flex-start; margin-top:12px; font-size:12.5px; letter-spacing:.2em; color:#FFFFFF; background:#8E1D22; padding:18px 32px;" class="vop-cta">記事を読む →</a>
+          </div>
+          <div style="position:relative; overflow:hidden; border-left:38px solid #8E1D22; min-width:0;">
+            <div style="position:absolute; inset:-8%; animation:vopKb 26s ease-in-out infinite alternate;"><img src="images/imanishi-hero.jpg" alt="今西 俊明" style="width:100%; height:100%; object-fit:cover; object-position:50% 12%;"></div>
+          </div>
+        </div>
+
+        <div data-hero style="position:absolute; inset:0; display:grid; grid-template-columns:1fr 520px; opacity:0; transition:opacity 1.1s ease;">
+          <span style="position:absolute; left:40px; top:30px; font-family:'Cormorant Garamond',serif; font-size:150px; line-height:.84; letter-spacing:.02em; color:transparent; -webkit-text-stroke:1px rgba(142,29,34,.14); pointer-events:none; z-index:1;">VOL<br>007</span>
+          <div style="position:relative; z-index:2; padding:104px 56px; display:flex; flex-direction:column; justify-content:center; gap:24px; min-width:0;">
+            <div style="display:flex; align-items:center; gap:16px; font-family:'Cormorant Garamond',serif; font-size:13px; letter-spacing:.34em; color:#B08A4A; white-space:nowrap;"><span>VOL.007</span><span style="width:40px; height:1px; background:#B08A4A;"></span><span style="color:rgba(27,22,20,.45);">SPORTS APPAREL</span></div>
+            <h1 style="margin:0; font-family:'Shippori Mincho',serif; font-weight:600; font-size:54px; line-height:1.54; letter-spacing:.05em; color:#1B1614;">つくったチームを、<br><span style="color:#8E1D22;">失いたくなかった</span></h1>
+            <p style="margin:0; max-width:470px; font-size:14.5px; line-height:2.25; color:rgba(27,22,20,.66);">ブラジル生まれのブランドを日本で展開する原点は、大学1年でつくった一つのフットサルチーム。</p>
+            <div style="display:flex; align-items:center; gap:14px; font-size:12.5px; letter-spacing:.12em; color:rgba(27,22,20,.55);"><span style="flex:none; width:22px; height:1px; background:rgba(27,22,20,.3);"></span><span>株式会社ZOTT 代表取締役 ／ 清野 潤</span></div>
+            <a href="article.html?id=seino" style="display:inline-flex; align-items:center; white-space:nowrap; align-self:flex-start; margin-top:12px; font-size:12.5px; letter-spacing:.2em; color:#FFFFFF; background:#8E1D22; padding:18px 32px;" class="vop-cta">記事を読む →</a>
+          </div>
+          <div style="position:relative; overflow:hidden; border-left:38px solid #8E1D22; min-width:0;">
+            <div style="position:absolute; inset:-8%; animation:vopKb 26s ease-in-out infinite alternate;"><img src="images/seino-hero.jpg" alt="清野 潤" style="width:100%; height:100%; object-fit:cover; object-position:50% 20%;"></div>
+          </div>
+        </div>
+
+        <div data-hero style="position:absolute; inset:0; display:grid; grid-template-columns:1fr 520px; opacity:0; transition:opacity 1.1s ease;">
+          <span style="position:absolute; left:40px; top:30px; font-family:'Cormorant Garamond',serif; font-size:150px; line-height:.84; letter-spacing:.02em; color:transparent; -webkit-text-stroke:1px rgba(142,29,34,.14); pointer-events:none; z-index:1;">VOL<br>006</span>
+          <div style="position:relative; z-index:2; padding:104px 56px; display:flex; flex-direction:column; justify-content:center; gap:24px; min-width:0;">
+            <div style="display:flex; align-items:center; gap:16px; font-family:'Cormorant Garamond',serif; font-size:13px; letter-spacing:.34em; color:#B08A4A; white-space:nowrap;"><span>VOL.006</span><span style="width:40px; height:1px; background:#B08A4A;"></span><span style="color:rgba(27,22,20,.45);">CEMETERY CONSULTING</span></div>
+            <h1 style="margin:0; font-family:'Shippori Mincho',serif; font-weight:600; font-size:54px; line-height:1.54; letter-spacing:.05em; color:#1B1614;">70代が<span style="color:#8E1D22;">現役</span>で<br>働く会社をつくる</h1>
+            <p style="margin:0; max-width:470px; font-size:14.5px; line-height:2.25; color:rgba(27,22,20,.66);">都心の寺院の境内に樹木葬を用意する。40代まで専業主婦だった代表の11年。</p>
+            <div style="display:flex; align-items:center; gap:14px; font-size:12.5px; letter-spacing:.12em; color:rgba(27,22,20,.55);"><span style="flex:none; width:22px; height:1px; background:rgba(27,22,20,.3);"></span><span>株式会社宙の会 代表 ／ 臂 幸子</span></div>
+            <a href="article.html?id=hiji" style="display:inline-flex; align-items:center; white-space:nowrap; align-self:flex-start; margin-top:12px; font-size:12.5px; letter-spacing:.2em; color:#FFFFFF; background:#8E1D22; padding:18px 32px;" class="vop-cta">記事を読む →</a>
+          </div>
+          <div style="position:relative; overflow:hidden; border-left:38px solid #8E1D22; min-width:0;">
+            <div style="position:absolute; inset:-8%; animation:vopKb 26s ease-in-out infinite alternate;"><img src="images/hiji-hero.jpg" alt="臂 幸子" style="width:100%; height:100%; object-fit:cover; object-position:50% 18%;"></div>
+          </div>
+        </div>
+
+        <div data-hero style="position:absolute; inset:0; display:grid; grid-template-columns:1fr 520px; opacity:0; transition:opacity 1.1s ease;">
+          <span style="position:absolute; left:40px; top:30px; font-family:'Cormorant Garamond',serif; font-size:150px; line-height:.84; letter-spacing:.02em; color:transparent; -webkit-text-stroke:1px rgba(142,29,34,.14); pointer-events:none; z-index:1;">VOL<br>005</span>
+          <div style="position:relative; z-index:2; padding:104px 56px; display:flex; flex-direction:column; justify-content:center; gap:24px; min-width:0;">
+            <div style="display:flex; align-items:center; gap:16px; font-family:'Cormorant Garamond',serif; font-size:13px; letter-spacing:.34em; color:#B08A4A; white-space:nowrap;"><span>VOL.005</span><span style="width:40px; height:1px; background:#B08A4A;"></span><span style="color:rgba(27,22,20,.45);">COMMUNICATION</span></div>
+            <h1 style="margin:0; font-family:'Shippori Mincho',serif; font-weight:600; font-size:54px; line-height:1.54; letter-spacing:.05em; color:#1B1614;">「みんなと同じ」が<br><span style="color:#8E1D22;">好きじゃなかった</span></h1>
+            <p style="margin:0; max-width:470px; font-size:14.5px; line-height:2.25; color:rgba(27,22,20,.66);">5歳でラケットを握り、18歳でプロへ。引退後、業務用無線機の会社の代表に就任した。</p>
+            <div style="display:flex; align-items:center; gap:14px; font-size:12.5px; letter-spacing:.12em; color:rgba(27,22,20,.55);"><span style="flex:none; width:22px; height:1px; background:rgba(27,22,20,.3);"></span><span>マス・コミュニケーションシステム 代表 ／ 斎藤 貴史</span></div>
+            <a href="article.html?id=saito" style="display:inline-flex; align-items:center; white-space:nowrap; align-self:flex-start; margin-top:12px; font-size:12.5px; letter-spacing:.2em; color:#FFFFFF; background:#8E1D22; padding:18px 32px;" class="vop-cta">記事を読む →</a>
+          </div>
+          <div style="position:relative; overflow:hidden; border-left:38px solid #8E1D22; min-width:0;">
+            <div style="position:absolute; inset:-8%; animation:vopKb 26s ease-in-out infinite alternate;"><img src="images/saito-hero.jpg" alt="斎藤 貴史" style="width:100%; height:100%; object-fit:cover; object-position:50% 12%;"></div>
+          </div>
+        </div>
+
+        <div style="position:absolute; left:56px; bottom:40px; display:flex; align-items:center; gap:12px; z-index:5;">
+          <span data-hero-dot style="width:34px; height:2px; background:#8E1D22; cursor:pointer;"></span><span data-hero-dot style="width:34px; height:2px; background:rgba(27,22,20,.18); cursor:pointer;"></span><span data-hero-dot style="width:34px; height:2px; background:rgba(27,22,20,.18); cursor:pointer;"></span><span data-hero-dot style="width:34px; height:2px; background:rgba(27,22,20,.18); cursor:pointer;"></span><span data-hero-dot style="width:34px; height:2px; background:rgba(27,22,20,.18); cursor:pointer;"></span>
+          <span id="w-hero-num" style="margin-left:10px; white-space:nowrap; font-family:'Cormorant Garamond',serif; font-size:11.5px; letter-spacing:.3em; color:rgba(27,22,20,.4);">01 / 05</span>
+        </div>
+      </div>
+
+      <!-- RED marquee band -->
+      <div style="overflow:hidden; background:#8E1D22; padding:15px 0;">
+        <div style="display:flex; width:200%; animation:vopMarquee 46s linear infinite; font-family:'Cormorant Garamond',serif; font-size:13px; letter-spacing:.44em; color:rgba(255,255,255,.82); white-space:nowrap;">
+          <span style="padding-right:56px;">INTERVIEWS WITH JAPANESE BUSINESS LEADERS ✦ ISSUE 04 “TO INHERIT” ✦ VOICE OF PRESIDENT ✦ </span>
+          <span style="padding-right:56px;">INTERVIEWS WITH JAPANESE BUSINESS LEADERS ✦ ISSUE 04 “TO INHERIT” ✦ VOICE OF PRESIDENT ✦ </span>
+        </div>
+      </div>
+
+      <!-- SERIES : red band -->
+      <div style="padding:100px 0 92px; display:flex; flex-direction:column; gap:40px; background:#8E1D22;">
+        <div style="display:flex; align-items:baseline; justify-content:space-between; padding:0 56px;">
+          <div style="display:flex; align-items:baseline; gap:20px;">
+            <h2 style="margin:0; font-family:'Cormorant Garamond',serif; font-size:15px; letter-spacing:.36em; font-weight:400; color:#E9C583;">SERIES</h2>
+            <span style="font-family:'Shippori Mincho',serif; font-size:13px; letter-spacing:.22em; color:rgba(255,248,243,.75);">連載一覧</span>
+          </div>
+          <a href="archive.html" style="white-space:nowrap; font-size:12px; letter-spacing:.14em; color:rgba(255,248,243,.75); border-bottom:1px solid rgba(233,197,131,.6); padding-bottom:6px;">すべての記事を見る →</a>
+        </div>
+        <div id="vop-shelf" style="display:flex; gap:26px; overflow-x:auto; padding:0 56px; cursor:grab;">
+          <a href="article.html?id=endo" data-rv style="flex:none; width:326px; display:flex; flex-direction:column; gap:16px; color:inherit;">
+            <div style="height:430px; overflow:hidden; position:relative;">
+              <img src="images/endo-hero.jpg" alt="遠藤 靖浩" style="width:100%; height:100%; object-fit:cover; object-position:50% 15%;">
+              <span style="position:absolute; left:0; top:18px; font-family:'Cormorant Garamond',serif; font-size:12px; letter-spacing:.28em; color:#8E1D22; background:#FFF8F3; padding:6px 14px; pointer-events:none;">VOL.009</span>
+              <span style="position:absolute; right:14px; bottom:14px; writing-mode:vertical-rl; font-family:'Shippori Mincho',serif; font-size:11.5px; letter-spacing:.34em; color:#FFFFFF; text-shadow:0 2px 12px rgba(0,0,0,.7); pointer-events:none;">キャリア支援</span>
+            </div>
+            <h3 style="margin:0; font-family:'Shippori Mincho',serif; font-size:22px; font-weight:400; line-height:1.7; letter-spacing:.05em; color:#FFF8F3;">「自分の名前で<br>勝負したい」</h3>
+            <span style="font-size:12px; letter-spacing:.1em; color:rgba(255,248,243,.7);">GLOW SHIFT ／ 遠藤 靖浩</span>
+          </a>
+          <a href="article.html?id=imanishi" data-rv style="flex:none; width:326px; display:flex; flex-direction:column; gap:16px; color:inherit;">
+            <div style="height:430px; overflow:hidden; position:relative;">
+              <img src="images/imanishi-hero.jpg" alt="今西 俊明" style="width:100%; height:100%; object-fit:cover; object-position:50% 15%;">
+              <span style="position:absolute; left:0; top:18px; font-family:'Cormorant Garamond',serif; font-size:12px; letter-spacing:.28em; color:#8E1D22; background:#FFF8F3; padding:6px 14px; pointer-events:none;">VOL.008</span>
+              <span style="position:absolute; right:14px; bottom:14px; writing-mode:vertical-rl; font-family:'Shippori Mincho',serif; font-size:11.5px; letter-spacing:.34em; color:#FFFFFF; text-shadow:0 2px 12px rgba(0,0,0,.7); pointer-events:none;">印刷・地域アプリ</span>
+            </div>
+            <h3 style="margin:0; font-family:'Shippori Mincho',serif; font-size:22px; font-weight:400; line-height:1.7; letter-spacing:.05em; color:#FFF8F3;">「現状維持は衰退」<br>2本目の柱をつくる</h3>
+            <span style="font-size:12px; letter-spacing:.1em; color:rgba(255,248,243,.7);">株式会社アイエルシー ／ 今西 俊明</span>
+          </a>
+          <a href="article.html?id=seino" data-rv style="flex:none; width:326px; display:flex; flex-direction:column; gap:16px; color:inherit;">
+            <div style="height:430px; overflow:hidden; position:relative;">
+              <img src="images/seino-hero.jpg" alt="清野 潤" style="width:100%; height:100%; object-fit:cover; object-position:50% 20%;">
+              <span style="position:absolute; left:0; top:18px; font-family:'Cormorant Garamond',serif; font-size:12px; letter-spacing:.28em; color:#8E1D22; background:#FFF8F3; padding:6px 14px; pointer-events:none;">VOL.007</span>
+              <span style="position:absolute; right:14px; bottom:14px; writing-mode:vertical-rl; font-family:'Shippori Mincho',serif; font-size:11.5px; letter-spacing:.34em; color:#FFFFFF; text-shadow:0 2px 12px rgba(0,0,0,.7); pointer-events:none;">スポーツアパレル</span>
+            </div>
+            <h3 style="margin:0; font-family:'Shippori Mincho',serif; font-size:22px; font-weight:400; line-height:1.7; letter-spacing:.05em; color:#FFF8F3;">つくったチームを、<br>失いたくなかった</h3>
+            <span style="font-size:12px; letter-spacing:.1em; color:rgba(255,248,243,.7);">株式会社ZOTT ／ 清野 潤</span>
+          </a>
+          <a href="article.html?id=hiji" data-rv style="flex:none; width:326px; display:flex; flex-direction:column; gap:16px; color:inherit;">
+            <div style="height:430px; overflow:hidden; position:relative;">
+              <img src="images/hiji-hero.jpg" alt="臂 幸子" style="width:100%; height:100%; object-fit:cover; object-position:50% 18%;">
+              <span style="position:absolute; left:0; top:18px; font-family:'Cormorant Garamond',serif; font-size:12px; letter-spacing:.28em; color:#8E1D22; background:#FFF8F3; padding:6px 14px; pointer-events:none;">VOL.006</span>
+              <span style="position:absolute; right:14px; bottom:14px; writing-mode:vertical-rl; font-family:'Shippori Mincho',serif; font-size:11.5px; letter-spacing:.34em; color:#FFFFFF; text-shadow:0 2px 12px rgba(0,0,0,.7); pointer-events:none;">墓苑コンサルティング</span>
+            </div>
+            <h3 style="margin:0; font-family:'Shippori Mincho',serif; font-size:22px; font-weight:400; line-height:1.7; letter-spacing:.05em; color:#FFF8F3;">70代が現役で<br>働く会社をつくる</h3>
+            <span style="font-size:12px; letter-spacing:.1em; color:rgba(255,248,243,.7);">株式会社宙の会 ／ 臂 幸子</span>
+          </a>
+          <a href="article.html?id=saito" data-rv style="flex:none; width:326px; display:flex; flex-direction:column; gap:16px; color:inherit;">
+            <div style="height:430px; overflow:hidden; position:relative;">
+              <img src="images/saito-hero.jpg" alt="斎藤 貴史" style="width:100%; height:100%; object-fit:cover; object-position:50% 15%;">
+              <span style="position:absolute; left:0; top:18px; font-family:'Cormorant Garamond',serif; font-size:12px; letter-spacing:.28em; color:#8E1D22; background:#FFF8F3; padding:6px 14px; pointer-events:none;">VOL.005</span>
+              <span style="position:absolute; right:14px; bottom:14px; writing-mode:vertical-rl; font-family:'Shippori Mincho',serif; font-size:11.5px; letter-spacing:.34em; color:#FFFFFF; text-shadow:0 2px 12px rgba(0,0,0,.7); pointer-events:none;">通信機器</span>
+            </div>
+            <h3 style="margin:0; font-family:'Shippori Mincho',serif; font-size:22px; font-weight:400; line-height:1.7; letter-spacing:.05em; color:#FFF8F3;">「みんなと同じ」が<br>好きじゃなかった</h3>
+            <span style="font-size:12px; letter-spacing:.1em; color:rgba(255,248,243,.7);">マス・コミュニケーションシステム ／ 斎藤 貴史</span>
+          </a>
+          <a href="article.html?id=hara" data-rv style="flex:none; width:326px; display:flex; flex-direction:column; gap:16px; color:inherit;">
+            <div style="height:430px; overflow:hidden; position:relative;">
+              <img src="images/hara-hero.jpg" alt="原 誠" style="width:100%; height:100%; object-fit:cover; object-position:50% 14%;">
+              <span style="position:absolute; left:0; top:18px; font-family:'Cormorant Garamond',serif; font-size:12px; letter-spacing:.28em; color:#8E1D22; background:#FFF8F3; padding:6px 14px; pointer-events:none;">VOL.004</span>
+              <span style="position:absolute; right:14px; bottom:14px; writing-mode:vertical-rl; font-family:'Shippori Mincho',serif; font-size:11.5px; letter-spacing:.34em; color:#FFFFFF; text-shadow:0 2px 12px rgba(0,0,0,.7); pointer-events:none;">スポーツ施設施工</span>
+            </div>
+            <h3 style="margin:0; font-family:'Shippori Mincho',serif; font-size:22px; font-weight:400; line-height:1.7; letter-spacing:.05em; color:#FFF8F3;">プレイヤー目線と、<br>徹底した品質へのこだわり</h3>
+            <span style="font-size:12px; letter-spacing:.1em; color:rgba(255,248,243,.7);">セントラル産業株式会社 ／ 原 誠</span>
+          </a>
+          <a href="article.html?id=irokawa" data-rv style="flex:none; width:326px; display:flex; flex-direction:column; gap:16px; color:inherit;">
+            <div style="height:430px; overflow:hidden; position:relative;">
+              <img src="images/irokawa-hero.jpg" alt="色川 冬馬" style="width:100%; height:100%; object-fit:cover; object-position:50% 14%;">
+              <span style="position:absolute; left:0; top:18px; font-family:'Cormorant Garamond',serif; font-size:12px; letter-spacing:.28em; color:#8E1D22; background:#FFF8F3; padding:6px 14px; pointer-events:none;">VOL.003</span>
+              <span style="position:absolute; right:14px; bottom:14px; writing-mode:vertical-rl; font-family:'Shippori Mincho',serif; font-size:11.5px; letter-spacing:.34em; color:#FFFFFF; text-shadow:0 2px 12px rgba(0,0,0,.7); pointer-events:none;">国際人材育成</span>
+            </div>
+            <h3 style="margin:0; font-family:'Shippori Mincho',serif; font-size:22px; font-weight:400; line-height:1.7; letter-spacing:.05em; color:#FFF8F3;">24歳で代表監督、<br>そしてMLBスカウトへ</h3>
+            <span style="font-size:12px; letter-spacing:.1em; color:rgba(255,248,243,.7);">株式会社Asian Breeze ／ 色川 冬馬</span>
+          </a>
+          <a href="article.html?id=mizobuchi" data-rv style="flex:none; width:326px; display:flex; flex-direction:column; gap:16px; color:inherit;">
+            <div style="height:430px; overflow:hidden; position:relative;">
+              <img src="images/mizobuchi-hero.jpg" alt="溝渕 善彦" style="width:100%; height:100%; object-fit:cover; object-position:50% 14%;">
+              <span style="position:absolute; left:0; top:18px; font-family:'Cormorant Garamond',serif; font-size:12px; letter-spacing:.28em; color:#8E1D22; background:#FFF8F3; padding:6px 14px; pointer-events:none;">VOL.002</span>
+              <span style="position:absolute; right:14px; bottom:14px; writing-mode:vertical-rl; font-family:'Shippori Mincho',serif; font-size:11.5px; letter-spacing:.34em; color:#FFFFFF; text-shadow:0 2px 12px rgba(0,0,0,.7); pointer-events:none;">経営コンサルティング</span>
+            </div>
+            <h3 style="margin:0; font-family:'Shippori Mincho',serif; font-size:22px; font-weight:400; line-height:1.7; letter-spacing:.05em; color:#FFF8F3;">できるかではなく、<br>やるかやらないか</h3>
+            <span style="font-size:12px; letter-spacing:.1em; color:rgba(255,248,243,.7);">中小企業診断士 ／ 溝渕 善彦</span>
+          </a>
+          <a href="article.html?id=yokoyama" data-rv style="flex:none; width:326px; display:flex; flex-direction:column; gap:16px; color:inherit;">
+            <div style="height:430px; overflow:hidden; position:relative;">
+              <img src="images/yokoyama-hero.jpg" alt="横山 貴明" style="width:100%; height:100%; object-fit:cover; object-position:50% 14%;">
+              <span style="position:absolute; left:0; top:18px; font-family:'Cormorant Garamond',serif; font-size:12px; letter-spacing:.28em; color:#8E1D22; background:#FFF8F3; padding:6px 14px; pointer-events:none;">VOL.001</span>
+              <span style="position:absolute; right:14px; bottom:14px; writing-mode:vertical-rl; font-family:'Shippori Mincho',serif; font-size:11.5px; letter-spacing:.34em; color:#FFFFFF; text-shadow:0 2px 12px rgba(0,0,0,.7); pointer-events:none;">建設・インフラ</span>
+            </div>
+            <h3 style="margin:0; font-family:'Shippori Mincho',serif; font-size:22px; font-weight:400; line-height:1.7; letter-spacing:.05em; color:#FFF8F3;">「勝つか、学ぶか」<br>福島を支える二代目</h3>
+            <span style="font-size:12px; letter-spacing:.1em; color:rgba(255,248,243,.7);">有限会社一貴工業 ／ 横山 貴明</span>
+          </a>
+        </div>
+        <div style="display:flex; align-items:center; gap:20px; padding:8px 56px 0;">
+          <div style="position:relative; flex:1; height:1px; background:rgba(255,248,243,.24);">
+            <div id="vop-shelf-bar" style="position:absolute; left:0; top:-1px; width:30%; height:3px; background:#E9C583;"></div>
+          </div>
+          <span style="white-space:nowrap; flex:none; font-family:'Cormorant Garamond',serif; font-size:11px; letter-spacing:.3em; color:rgba(255,248,243,.55);">DRAG</span>
+        </div>
+      </div>
+
+      <!-- ABOUT : cream band with gold rule -->
+      <div style="display:flex; align-items:center; justify-content:space-between; gap:48px; padding:72px 56px; background:#F7F4EF; border-top:1px solid #B08A4A;">
+        <div style="display:flex; flex-direction:column; gap:16px;">
+          <span style="font-family:'Cormorant Garamond',serif; font-size:12px; letter-spacing:.34em; color:#B08A4A;">ABOUT US</span>
+          <p style="margin:0; font-family:'Shippori Mincho',serif; font-size:28px; line-height:1.9; letter-spacing:.08em; color:#1B1614;">この記事は、私たちが企業と<br>向き合う姿勢そのものです。</p>
+        </div>
+        <div style="display:flex; gap:16px; flex:none;">
+          <span style="display:inline-flex; align-items:center; white-space:nowrap; flex:none; font-size:12.5px; letter-spacing:.2em; padding:18px 30px; border:1px solid rgba(27,22,20,.28); color:#1B1614;" class="vop-outline">会社概要</span>
+          <span style="position:relative; overflow:hidden; display:inline-flex; align-items:center; white-space:nowrap; flex:none; font-size:12.5px; letter-spacing:.2em; padding:18px 30px; background:#8E1D22; color:#FFFFFF;">
+            <span style="position:absolute; inset:0; background:linear-gradient(100deg,rgba(255,255,255,0) 38%,rgba(233,197,131,.6) 50%,rgba(255,255,255,0) 62%); background-size:220% 100%; animation:vopSheen 5.5s ease-in-out infinite; pointer-events:none;"></span>
+            お問い合わせ
+          </span>
+        </div>
+      </div>
+
+      <footer style="padding:34px 56px; background:#8E1D22; display:flex; justify-content:space-between; align-items:center; font-size:11.5px; letter-spacing:.16em; color:rgba(255,248,243,.72);">
+        <span style="font-family:'Cormorant Garamond',serif; letter-spacing:.3em; font-size:13px; color:#FFF8F3;">VOICE OF PRESIDENT</span>
+        <span style="display:flex; gap:26px;"><span>プライバシーポリシー</span><span>© 2026</span></span>
+      </footer>
+    </div>
+
+  </div>
+  </div>
+</section>
+
+<script src="script.js"></script>
+</body>
+</html>
