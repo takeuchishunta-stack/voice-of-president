@@ -18,6 +18,11 @@
         </blockquote>`;
       case 'prof':
         return null; // rendered separately, appended after the loop
+      case 'img':
+        return `<figure style="margin:16px 0 44px;">
+          <div style="overflow:hidden;"><img src="${esc(b.src)}" alt="${esc(b.caption || '')}" style="width:100%; display:block; object-fit:cover;"></div>
+          ${b.caption ? `<figcaption style="margin-top:12px; font-size:12px; letter-spacing:.06em; line-height:1.8; color:rgba(27,22,20,.5);">${esc(b.caption)}</figcaption>` : ''}
+        </figure>`;
       case 'p':
       default:
         return `<p style="margin:0 0 34px; font-family:'Shippori Mincho',serif; font-size:16.5px; line-height:2.4; letter-spacing:.04em; color:rgba(27,22,20,.82);">${esc(b.x)}</p>`;
