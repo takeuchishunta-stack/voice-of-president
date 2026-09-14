@@ -42,6 +42,27 @@
     </div>`;
   }
 
+  function renderCompanyInfo(c) {
+    const rows = [
+      ['所在地', c.address],
+      ['連絡先', c.tel],
+      ['代表者', c.rep],
+      ['設立', c.established],
+      ['事業内容', c.business],
+      ['許可番号', c.license]
+    ].filter(([, v]) => v);
+    return `<div style="margin:24px 0 0; padding:34px 40px; border:1px solid rgba(27,22,20,.16);">
+      <div style="display:flex; align-items:baseline; gap:14px; margin-bottom:20px;">
+        <span style="font-family:'Cormorant Garamond',serif; font-size:11.5px; letter-spacing:.3em; color:#B08A4A;">COMPANY</span>
+        <strong style="font-family:'Shippori Mincho',serif; font-size:16px; font-weight:600; letter-spacing:.05em;">${esc(c.name)}</strong>
+      </div>
+      <dl style="margin:0; display:grid; grid-template-columns:104px 1fr; row-gap:11px; column-gap:16px; font-size:13px; line-height:1.8; color:rgba(27,22,20,.72);">
+        ${rows.map(([k, v]) => `<dt style="margin:0; color:rgba(27,22,20,.48); letter-spacing:.1em;">${esc(k)}</dt><dd style="margin:0;">${esc(v)}</dd>`).join('')}
+      </dl>
+      ${c.url ? `<a href="${esc(c.url)}" target="_blank" rel="noopener" style="display:inline-block; margin-top:18px; font-size:12px; letter-spacing:.06em; color:#8E1D22; border-bottom:1px solid rgba(142,29,34,.4); padding-bottom:2px;">${esc(c.url)}</a>` : ''}
+    </div>`;
+  }
+
   function render() {
     const list = window.VOP_ARTICLES || [];
     const root = document.getElementById('vop-article');
@@ -78,6 +99,7 @@
         <div style="min-width:0; display:flex; flex-direction:column; gap:0;">
           ${a.blocks.map(renderBlock).filter(Boolean).join('\n')}
           ${profBlock ? renderProfile(a, profBlock) : ''}
+          ${a.companyInfo ? renderCompanyInfo(a.companyInfo) : ''}
         </div>
         <div></div>
       </div>
