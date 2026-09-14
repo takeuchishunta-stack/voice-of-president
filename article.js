@@ -8,13 +8,13 @@
       case 'lead':
         return `<p style="margin:0 0 44px; font-family:'Shippori Mincho',serif; font-size:19px; line-height:2.25; letter-spacing:.05em; color:#1B1614;">${esc(b.x)}</p>`;
       case 'h':
-        return `<div style="display:flex; align-items:center; gap:16px; margin:20px 0 32px;">
-          <span style="flex:none; width:30px; height:1px; background:#B08A4A;"></span>
+        return `<div style="margin:20px 0 32px; padding:26px 28px; border-left:3px solid #8E1D22; background:#F7F4EF;">
           <h2 style="margin:0; font-family:'Shippori Mincho',serif; font-size:24px; font-weight:600; line-height:1.7; letter-spacing:.06em;">${esc(b.x)}</h2>
         </div>`;
       case 'q':
-        return `<blockquote style="margin:8px 0 40px; padding:30px 0 30px 34px; border-left:3px solid #8E1D22; background:#F7F4EF;">
-          <p style="margin:0; padding-right:28px; font-family:'Shippori Mincho',serif; font-size:21px; line-height:2.1; letter-spacing:.06em; color:#1B1614;">「${esc(b.x)}」</p>
+        return `<blockquote style="margin:8px 0 40px;">
+          <div style="display:flex; align-items:center; gap:16px; margin-bottom:14px;"><span style="flex:none; width:30px; height:1px; background:#B08A4A;"></span></div>
+          <p style="margin:0; font-family:'Shippori Mincho',serif; font-size:21px; font-weight:700; line-height:2.1; letter-spacing:.06em; color:#1B1614;">「${esc(b.x)}」</p>
         </blockquote>`;
       case 'prof':
         return null; // rendered separately, appended after the loop
