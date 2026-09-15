@@ -121,7 +121,7 @@ window.VOP_ARTICLES = [
   {
     id: "hatakeyama", vol: "013", date: "2026.09.14", category: "和菓子製造業",
     photo: "images/hatakeyama-hero.jpg", face: "images/hatakeyama-face.jpg",
-    title: "「町のお菓子屋というインフラは、この街にちゃんと残しておいてあげたい」",
+    title: "「町のお菓子屋というインフラは、この街にちゃんと残したい」",
     subtitle: "気仙沼・いさみや3代目が挑む、菓子屋の残し方",
     company: "有限会社いさみや", role: "代表取締役", name: "畠山 憲之",
     excerpt: "宮城県気仙沼市本吉町、1947年創業の「御菓子司 いさみや」。一度は家業のレールを外れ、10年の修業を経て戻った3代目・畠山憲之さんが、人口が減り続ける町で菓子屋を残すために考えていること。",
