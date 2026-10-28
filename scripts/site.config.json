@@ -1,0 +1,17 @@
+{
+  "_note": "記事ページを書き出す時の設定。siteUrl は独自ドメインに移ったらここを変える。pr.enabled を true にすると記事末に PR 枠が出る",
+  "siteUrl": "https://voice-of-president.vercel.app",
+  "siteName": "VOICE OF PRESIDENT",
+  "tagline": "経営者に、聞く。",
+  "description": "地域と業界を支える経営者に、事業の始まりと決断の理由を聞くインタビューメディア。",
+  "publisher": "VOICE OF PRESIDENT 編集部",
+  "pr": {
+    "enabled": false,
+    "advertiser": "合同会社Furutori",
+    "eyebrow": "お店を探している人に、きちんと見つけてもらう",
+    "title": "Googleマップの見え方、無料でチェックします",
+    "text": "地域のお店・クリニック・事務所向けに、Googleマップ（Googleビジネスプロフィール）の表示状況を確認し、改善点をお伝えします。",
+    "cta": "無料チェックの内容を見る",
+    "href": ""
+  }
+}

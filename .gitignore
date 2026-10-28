@@ -1,0 +1,6 @@
+# ビルドで毎回作り直すもの
+/interview/
+/sitemap.xml
+/robots.txt
+/archive.html
+/search.html

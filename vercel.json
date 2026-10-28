@@ -1,0 +1,7 @@
+{
+  "buildCommand": "node scripts/build.mjs",
+  "outputDirectory": ".",
+  "redirects": [
+    { "source": "/article.html", "has": [{ "type": "query", "key": "id", "value": "(?<id>[a-z0-9-]+)" }], "destination": "/interview/:id/", "permanent": true }
+  ]
+}
