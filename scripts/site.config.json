@@ -7,11 +7,12 @@
   "publisher": "VOICE OF PRESIDENT 編集部",
   "pr": {
     "enabled": false,
-    "advertiser": "合同会社Furutori",
+    "advertiser": "合同会社Furutori（LocalBoost）",
     "eyebrow": "お店を探している人に、きちんと見つけてもらう",
-    "title": "Googleマップの見え方、無料でチェックします",
-    "text": "地域のお店・クリニック・事務所向けに、Googleマップ（Googleビジネスプロフィール）の表示状況を確認し、改善点をお伝えします。",
-    "cta": "無料チェックの内容を見る",
-    "href": ""
+    "title": "Googleマップ診断レポートを無料でお届けします",
+    "text": "地域のお店・クリニック・事務所の、Googleマップでの見え方を診断し、改善点をレポートにまとめてお送りします。",
+    "cta": "無料診断レポートを申し込む",
+    "href": "",
+    "_note": "href は localboost.jp の診断レポート申込ページができたら入れて enabled を true にする"
   }
 }
