@@ -10,6 +10,14 @@ const ROOT = path.resolve(path.dirname(new URL(import.meta.url).pathname), '..')
 const cfg = JSON.parse(fs.readFileSync(path.join(ROOT, 'scripts/site.config.json'), 'utf8'));
 const net = JSON.parse(fs.readFileSync(path.join(ROOT, 'scripts/network.json'), 'utf8'));
 const SITE = (process.env.SITE_URL || cfg.siteUrl).replace(/\/$/, '');
+const AN = cfg.analytics || {};
+const GA4 = String(process.env.GA4_ID || AN.ga4MeasurementId || '').trim();
+const MEDIA = AN.mediaId || 'vop';
+if (GA4 && !/^G-[A-Z0-9]{4,}$/.test(GA4)) throw new Error(`GA4 の測定ID の形が違います：${GA4}`);
+// GA4 のタグ。測定ID が空なら何も出さない。記事のイベントは /assets/article.js が送る
+const gaTag = () => GA4 ? `<script async src="https://www.googletagmanager.com/gtag/js?id=${GA4}"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','${GA4}',{media_id:'${MEDIA}'});</script>
+` : '';
 
 const ctx = { window: {} };
 vm.runInNewContext(fs.readFileSync(path.join(ROOT, 'articles-data.js'), 'utf8'), ctx);
@@ -30,7 +38,7 @@ const sim = (a, b) => { const x = grams(a.category + a.subtitle), y = grams(b.ca
 const related = a => list.filter(b => b.id !== a.id).map(b => ({ b, s: sim(a, b) })).sort((p, q) => q.s - p.s || iso(q.b.date).localeCompare(iso(p.b.date))).slice(0, 3).map(x => x.b);
 const sisters = a => net.articles.filter(n => n.name === norm(a.name));
 
-const head = ({ title, desc, canonical, image, type = 'website', jsonld = [] }) => `<!DOCTYPE html>
+const head = ({ title, desc, canonical, image, type = 'website', jsonld = [], articleId = '' }) => `<!DOCTYPE html>
 <html lang="ja">
 <head>
 <meta charset="utf-8">
@@ -51,8 +59,8 @@ ${image ? `<meta property="og:image" content="${esc(image)}">\n<meta name="twitt
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@400;600;700&family=Cormorant+Garamond:wght@400;500&family=Zen+Kaku+Gothic+New:wght@400;500&display=swap"></noscript>
 <link rel="stylesheet" href="/assets/article.css">
 ${jsonld.map(j => `<script type="application/ld+json">${JSON.stringify(j).replace(/</g, '\\u003c')}</script>`).join('\n')}
-</head>
-<body>
+${gaTag()}</head>
+<body data-media="${MEDIA}"${articleId ? ` data-article="${esc(articleId)}"` : ''}>
 <a class="skip" href="#main">本文へ</a>
 <header class="hd">
   <a class="hd-logo" href="/">VOICE OF PRESIDENT</a><span class="hd-tag">${esc(cfg.tagline)}</span>
@@ -92,7 +100,7 @@ function prBox() {
   if (!p || !p.enabled || !p.href) return '';
   return `<aside class="pr" aria-label="広告">
     <div class="pr-lbl"><span>PR</span>広告主：${esc(p.advertiser)}</div>
-    <a class="pr-box" href="${esc(p.href)}" rel="sponsored noopener" target="_blank" data-pr>
+    <a class="pr-box" href="${esc(p.href)}" rel="sponsored noopener" target="_blank" data-pr data-banner="${esc(p.bannerId || 'localboost-gbp-report')}">
       <span class="pr-eye">${esc(p.eyebrow)}</span><strong>${esc(p.title)}</strong><span class="pr-tx">${esc(p.text)}</span><span class="pr-cta">${esc(p.cta)} →</span>
     </a>
   </aside>`;
@@ -115,7 +123,7 @@ function articlePage(a, i) {
   ];
   const rows = c ? [['所在地', c.address], ['連絡先', c.tel], ['代表者', c.rep], ['設立', c.established], ['事業内容', c.business], ['許可番号', c.license]].filter(([, v]) => v) : [];
 
-  return head({ title, desc, canonical, image: abs(a.photo), type: 'article', jsonld }) + `
+  return head({ title, desc, canonical, image: abs(a.photo), type: 'article', jsonld, articleId: a.id }) + `
 <main id="main">
   <nav class="crumb" aria-label="パンくず"><a href="/">トップ</a><span>›</span><a href="/archive.html">連載一覧</a><span>›</span><span>${esc(a.name)}さん</span></nav>
   <section class="hero">
@@ -132,6 +140,7 @@ function articlePage(a, i) {
 
   <article class="body">
     ${(a.blocks || []).map(block).join('\n    ')}
+    <span class="body-end" data-body-end aria-hidden="true"></span>
     ${prof ? `<section class="prof" aria-label="プロフィール"><img src="/${esc(a.face || a.photo)}" alt="" loading="lazy"><div><span class="eyebrow">PROFILE</span><strong>${esc(a.name)}<small>${esc(a.company)}　${esc(a.role)}</small></strong><p>${esc(prof.x)}</p></div></section>` : ''}
     ${c ? `<section class="co" aria-label="会社情報"><p><span class="eyebrow">COMPANY</span><strong>${esc(c.name)}</strong></p><dl>${rows.map(([k, v]) => `<dt>${esc(k)}</dt><dd>${esc(v)}</dd>`).join('')}</dl>${c.url ? `<a href="${esc(c.url)}" target="_blank" rel="noopener">${esc(c.url)}</a>` : ''}</section>` : ''}
 
@@ -153,9 +162,9 @@ function articlePage(a, i) {
 
   ${prBox()}
 
-  ${sis.length ? `<section class="sis"><h2 class="sec-h"><span class="eyebrow">ANOTHER ANGLE</span>${esc(a.name)}さんの別の切り口の記事</h2><ul>${sis.map(s => `<li><a href="${esc(s.url)}" target="_blank" rel="noopener"><span>${esc(s.site)}｜${esc(s.angle)}</span>${esc(s.title)}</a></li>`).join('')}</ul></section>` : ''}
+  ${sis.length ? `<section class="sis"><h2 class="sec-h"><span class="eyebrow">ANOTHER ANGLE</span>${esc(a.name)}さんの別の切り口の記事</h2><ul>${sis.map(s => `<li><a href="${esc(s.url)}" target="_blank" rel="noopener" data-dest="${esc(s.site)}"><span>${esc(s.site)}｜${esc(s.angle)}</span>${esc(s.title)}</a></li>`).join('')}</ul></section>` : ''}
 
-  <section class="net"><h2 class="sec-h"><span class="eyebrow">SISTER MEDIA</span>姉妹メディア</h2><ul>${net.sites.map(s => `<li><a href="${esc(s.url)}" target="_blank" rel="noopener"><strong>${esc(s.name)}</strong><span>${esc(s.desc)}</span></a></li>`).join('')}</ul></section>
+  <section class="net"><h2 class="sec-h"><span class="eyebrow">SISTER MEDIA</span>姉妹メディア</h2><ul>${net.sites.map(s => `<li><a href="${esc(s.url)}" target="_blank" rel="noopener" data-dest="${esc(s.site || s.name)}"><strong>${esc(s.name)}</strong><span>${esc(s.desc)}</span></a></li>`).join('')}</ul></section>
 
   <p class="back"><a class="btn" href="/archive.html">連載一覧へ</a><a href="/">トップページ</a></p>
 </main>
@@ -189,6 +198,12 @@ function searchPage() {
 
 function write(rel, html) { const f = path.join(ROOT, rel); fs.mkdirSync(path.dirname(f), { recursive: true }); fs.writeFileSync(f, html); }
 
+// トップ（手書きの index.html）にも同じタグを差す。印の間を毎回作り直すので、ID が空なら印ごと消えて元の形に戻る
+{
+  const f = path.join(ROOT, 'index.html');
+  const html = fs.readFileSync(f, 'utf8').replace(/\n?<!-- vop-ga4 -->[\s\S]*?<!-- \/vop-ga4 -->/, '');
+  fs.writeFileSync(f, GA4 ? html.replace('</head>', `<!-- vop-ga4 -->\n${gaTag()}<!-- /vop-ga4 -->\n</head>`) : html);
+}
 fs.rmSync(path.join(ROOT, 'interview'), { recursive: true, force: true });
 list.forEach((a, i) => write(`interview/${a.id}/index.html`, articlePage(a, i)));
 write('archive.html', archivePage());

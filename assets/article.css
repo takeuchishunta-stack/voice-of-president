@@ -89,3 +89,4 @@ main{max-width:1240px;margin:0 auto;background:#fff}
   .net ul{grid-template-columns:repeat(3,1fr)}.list{padding:56px 48px 72px}.cards-all{grid-template-columns:repeat(3,1fr)}
   .ft{padding:30px 48px}.pr{max-width:820px;margin:0 auto}
 }
+.body-end{display:block;height:1px}

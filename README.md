@@ -14,3 +14,10 @@
 設定は `scripts/site.config.json`（独自ドメインに移ったら siteUrl を変える。PR 枠は pr.enabled と href）。
 姉妹メディアの記事一覧は `scripts/network.json`（同じ方の別メディアの記事を出すのに使う）。
 `interview/`・`archive.html`・`search.html`・`sitemap.xml`・`robots.txt` はビルドで作り直されるので、直接は編集しない。
+
+## アクセス解析（GA4）
+
+- 測定ID は `scripts/site.config.json` の `analytics.ga4MeasurementId`（または Vercel の環境変数 `GA4_ID`）。空ならタグは出ない。
+- 4サイトで1つの GA4 に送り、`media_id`（このサイトは `vop`）で見分ける。
+- 記事ページのイベント（`assets/article.js`）：`article_end_view`（本文の末尾が見えた＋表で開いていた時間の合計30秒・1回）／`related_article_click`／`sister_media_click`／`pr_impression`（PR 枠の50%が1秒・1回）／`pr_click`／`share_click`。共通の値は `media_id`・`article_id`・`placement`・`destination_media`・`banner_id`。
+- GA4 の管理画面で、上の値をカスタム ディメンション（イベント スコープ）に登録すると、レポートで見られる。

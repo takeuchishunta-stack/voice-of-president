@@ -14,5 +14,10 @@
     "cta": "無料診断レポートを申し込む",
     "href": "",
     "_note": "href は localboost.jp の診断レポート申込ページができたら入れて enabled を true にする"
+  },
+  "analytics": {
+    "_note": "GA4 の測定ID（G-から始まる）。空ならタグを出さない。Vercel の環境変数 GA4_ID があればそちらを優先。4サイト共通の1つの GA4 に送り、media_id で見分ける",
+    "ga4MeasurementId": "",
+    "mediaId": "vop"
   }
 }
