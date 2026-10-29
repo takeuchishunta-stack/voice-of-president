@@ -36,9 +36,27 @@ const plainTitle = t => String(t).replace(/^「|」$/g, '').replace(/\s+/g, '');
 const grams = s => { s = norm(s); const g = new Set(); for (let i = 0; i < s.length - 1; i++) g.add(s.slice(i, i + 2)); return g; };
 const sim = (a, b) => { const x = grams(a.category + a.subtitle), y = grams(b.category + b.subtitle); let n = 0; x.forEach(v => y.has(v) && n++); return n / Math.max(1, Math.min(x.size, y.size)); };
 const related = a => list.filter(b => b.id !== a.id).map(b => ({ b, s: sim(a, b) })).sort((p, q) => q.s - p.s || iso(q.b.date).localeCompare(iso(p.b.date))).slice(0, 3).map(x => x.b);
+// 見出し画像（scripts/make-og.mjs で作った images/og/{id}.jpg）があれば SNS の表示画像に使う
+const og = a => fs.existsSync(path.join(ROOT, `images/og/${a.id}.jpg`)) ? { wide: abs(`images/og/${a.id}.jpg`), w169: abs(`images/og/${a.id}-675.jpg`) } : null;
+// 強調引用（scripts/og-quotes.json の pull）。本文に無い言葉なら書き出しを止める
+const QJ = fs.existsSync(path.join(ROOT, 'scripts/og-quotes.json')) ? JSON.parse(fs.readFileSync(path.join(ROOT, 'scripts/og-quotes.json'), 'utf8')) : {};
+const pullOf = a => {
+  const q = (QJ.pull || {})[a.id]; if (!q) return '';
+  if (!(a.blocks || []).some(b => (b.x || '').includes(q))) throw new Error(`強調引用が本文にありません（${a.id}）：${q}`);
+  return `<aside class="pull" aria-label="${esc(a.name)}さんの言葉"><p>${esc(q.replace(/。$/, ''))}</p><span>${esc(a.name)}</span></aside>`;
+};
+// 中ほど（本文の45%あたり）の見出しの前に差す
+const withPull = a => {
+  const bl = (a.blocks || []).map(block), pq = pullOf(a);
+  if (!pq) return bl;
+  const hs = (a.blocks || []).map((b, i) => b.t === 'h' ? i : -1).filter(i => i > 0);
+  if (!hs.length) return bl;
+  const at = hs.reduce((m, i) => Math.abs(i - bl.length * 0.45) < Math.abs(m - bl.length * 0.45) ? i : m, hs[0]);
+  bl.splice(at, 0, pq); return bl;
+};
 const sisters = a => net.articles.filter(n => n.name === norm(a.name));
 
-const head = ({ title, desc, canonical, image, type = 'website', jsonld = [], articleId = '' }) => `<!DOCTYPE html>
+const head = ({ title, desc, canonical, image, ogSize = false, type = 'website', jsonld = [], articleId = '' }) => `<!DOCTYPE html>
 <html lang="ja">
 <head>
 <meta charset="utf-8">
@@ -51,7 +69,8 @@ const head = ({ title, desc, canonical, image, type = 'website', jsonld = [], ar
 <meta property="og:title" content="${esc(title)}">
 <meta property="og:description" content="${esc(desc)}">
 <meta property="og:url" content="${esc(canonical)}">
-${image ? `<meta property="og:image" content="${esc(image)}">\n<meta name="twitter:card" content="summary_large_image">` : '<meta name="twitter:card" content="summary">'}
+<meta name="robots" content="max-image-preview:large">
+${image ? `<meta property="og:image" content="${esc(image)}">${ogSize ? `\n<meta property="og:image:width" content="1200">\n<meta property="og:image:height" content="630">` : ''}\n<meta name="twitter:card" content="summary_large_image">` : '<meta name="twitter:card" content="summary">'}
 <meta property="og:locale" content="ja_JP">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -117,13 +136,14 @@ function articlePage(a, i) {
   const sis = sisters(a);
   const c = a.companyInfo;
   const share = encodeURIComponent(canonical), shareT = encodeURIComponent(`${plainTitle(a.title)}｜${a.name}さん（${a.company}）`);
+  const o = og(a);
   const jsonld = [
-    { '@context': 'https://schema.org', '@type': 'Article', headline: clip(plainTitle(a.title) + '｜' + a.name, 110), description: desc, image: [abs(a.photo)], datePublished: `${date}T09:00:00+09:00`, dateModified: `${date}T09:00:00+09:00`, mainEntityOfPage: canonical, author: { '@type': 'Organization', name: cfg.publisher, url: SITE + '/' }, publisher: { '@type': 'Organization', name: cfg.siteName, url: SITE + '/' }, about: { '@type': 'Person', name: a.name, jobTitle: a.role, worksFor: { '@type': 'Organization', name: a.company, ...(c && c.url ? { url: c.url } : {}) } } },
+    { '@context': 'https://schema.org', '@type': 'Article', headline: clip(plainTitle(a.title) + '｜' + a.name, 110), description: desc, image: o ? [o.w169, o.wide, abs(a.photo)] : [abs(a.photo)], datePublished: `${date}T09:00:00+09:00`, dateModified: `${date}T09:00:00+09:00`, mainEntityOfPage: canonical, author: { '@type': 'Organization', name: cfg.publisher, url: SITE + '/' }, publisher: { '@type': 'Organization', name: cfg.siteName, url: SITE + '/' }, about: { '@type': 'Person', name: a.name, jobTitle: a.role, worksFor: { '@type': 'Organization', name: a.company, ...(c && c.url ? { url: c.url } : {}) } } },
     { '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: [{ '@type': 'ListItem', position: 1, name: cfg.siteName, item: SITE + '/' }, { '@type': 'ListItem', position: 2, name: '連載一覧', item: SITE + '/archive.html' }, { '@type': 'ListItem', position: 3, name: `${a.name}さん` }] }
   ];
   const rows = c ? [['所在地', c.address], ['連絡先', c.tel], ['代表者', c.rep], ['設立', c.established], ['事業内容', c.business], ['許可番号', c.license]].filter(([, v]) => v) : [];
 
-  return head({ title, desc, canonical, image: abs(a.photo), type: 'article', jsonld, articleId: a.id }) + `
+  return head({ title, desc, canonical, image: o ? o.wide : abs(a.photo), ogSize: !!o, type: 'article', jsonld, articleId: a.id }) + `
 <main id="main">
   <nav class="crumb" aria-label="パンくず"><a href="/">トップ</a><span>›</span><a href="/archive.html">連載一覧</a><span>›</span><span>${esc(a.name)}さん</span></nav>
   <section class="hero">
@@ -139,7 +159,7 @@ function articlePage(a, i) {
   </section>
 
   <article class="body">
-    ${(a.blocks || []).map(block).join('\n    ')}
+    ${withPull(a).join('\n    ')}
     <span class="body-end" data-body-end aria-hidden="true"></span>
     ${prof ? `<section class="prof" aria-label="プロフィール"><img src="/${esc(a.face || a.photo)}" alt="" loading="lazy"><div><span class="eyebrow">PROFILE</span><strong>${esc(a.name)}<small>${esc(a.company)}　${esc(a.role)}</small></strong><p>${esc(prof.x)}</p></div></section>` : ''}
     ${c ? `<section class="co" aria-label="会社情報"><p><span class="eyebrow">COMPANY</span><strong>${esc(c.name)}</strong></p><dl>${rows.map(([k, v]) => `<dt>${esc(k)}</dt><dd>${esc(v)}</dd>`).join('')}</dl>${c.url ? `<a href="${esc(c.url)}" target="_blank" rel="noopener">${esc(c.url)}</a>` : ''}</section>` : ''}
