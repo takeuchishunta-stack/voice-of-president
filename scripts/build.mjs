@@ -12,7 +12,8 @@ const cfg = JSON.parse(fs.readFileSync(path.join(ROOT, 'scripts/site.config.json
 const net = JSON.parse(fs.readFileSync(path.join(ROOT, 'scripts/network.json'), 'utf8'));
 const SITE = (process.env.SITE_URL || cfg.siteUrl).replace(/\/$/, '');
 const AN = cfg.analytics || {};
-const GA4 = String(process.env.GA4_ID || AN.ga4MeasurementId || '').trim();
+// GA4 は本番（Vercel の production）だけで出す。手元で確かめる時は GA4_FORCE=1
+const GA4 = (process.env.VERCEL_ENV === 'production' || process.env.GA4_FORCE === '1') ? String(process.env.GA4_ID || AN.ga4MeasurementId || '').trim() : '';
 const MEDIA = AN.mediaId || 'vop';
 if (GA4 && !/^G-[A-Z0-9]{4,}$/.test(GA4)) throw new Error(`GA4 の測定ID の形が違います：${GA4}`);
 // GA4 のタグ。測定ID が空なら何も出さない。記事のイベントは /assets/article.js が送る
@@ -47,8 +48,10 @@ const og = a => {
 // 強調引用（scripts/og-quotes.json の pull）。本文に無い言葉なら書き出しを止める
 const QJ = fs.existsSync(path.join(ROOT, 'scripts/og-quotes.json')) ? JSON.parse(fs.readFileSync(path.join(ROOT, 'scripts/og-quotes.json'), 'utf8')) : {};
 // 本番では、本人の了承（approved に日付）がある記事だけ見出し画像と強調引用を出す。プレビュー・手元では全部出す
-const PROD = process.env.VERCEL_ENV === 'production';
-const okFor = a => !PROD || Boolean((QJ.approved || {})[a.id]);
+// 了承前の物を出してよいのは、Vercel のプレビューと手元（CI でない）だけ。分からない時は出さない側に倒す
+const E = process.env;
+const DRAFT_OK = E.VERCEL_ENV === 'preview' || (!E.VERCEL && !E.NETLIFY && !E.CI);
+const okFor = a => DRAFT_OK || Boolean((QJ.approved || {})[a.id]);
 const ogAltOf = a => { const q = (QJ.quotes || {})[a.id]; return q ? `${cfg.siteName}｜${a.name}さん「${q.replace(/\|/g, '').replace(/。$/, '')}」` : `${a.name}さんの写真`; };
 const pullOf = a => {
   const q = okFor(a) && (QJ.pull || {})[a.id]; if (!q) return '';
@@ -256,6 +259,11 @@ function write(rel, html) { const f = path.join(ROOT, rel); fs.mkdirSync(path.di
   const f = path.join(ROOT, 'index.html');
   const html = fs.readFileSync(f, 'utf8').replace(/\n?<!-- vop-ga4 -->[\s\S]*?<!-- \/vop-ga4 -->/, '');
   fs.writeFileSync(f, GA4 ? html.replace('</head>', `<!-- vop-ga4 -->\n${gaTag()}<!-- /vop-ga4 -->\n</head>`) : html);
+}
+// 了承前の見出し画像は、本番の配信物から消す（URL を直接打っても開けないように）
+if (fs.existsSync(path.join(ROOT, 'images/og'))) for (const f of fs.readdirSync(path.join(ROOT, 'images/og'))) {
+  const id = f.replace(/(-675|-4x3|-1x1)?\.jpg$/, '');
+  if (!okFor({ id })) fs.rmSync(path.join(ROOT, 'images/og', f));
 }
 fs.rmSync(path.join(ROOT, 'interview'), { recursive: true, force: true });
 list.forEach((a, i) => write(`interview/${a.id}/index.html`, articlePage(a, i)));

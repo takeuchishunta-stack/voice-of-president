@@ -97,7 +97,7 @@ article.body>p{text-align:justify}
 .pv .body a{overflow-wrap:anywhere;font-size:13px}
 .body .q{border-top:0;border-left:2px solid var(--gold);padding:2px 0 2px 18px;margin:6px 0 34px}
 .body .q p{font-weight:600;font-size:17.5px;line-height:2;text-indent:-.5em;color:rgba(27,22,20,.9);text-align:left}
-.pull{margin:60px 0 72px;padding:34px 4px 30px;border-top:1px solid var(--red);border-bottom:1px solid var(--line);text-align:left}
+.pull{margin:60px 0 72px;padding:34px 4px 30px;border-top:1px solid var(--gold);border-bottom:1px solid var(--gold);text-align:left}
 .pull p{margin:0 0 18px!important;font-family:var(--min);font-weight:600;font-size:22px!important;line-height:1.8!important;letter-spacing:.06em!important;color:var(--ink)!important;text-align:left!important}
 .pull p{padding-left:.55em;text-indent:-.55em}.pull p::before{content:"「"}.pull p::after{content:"」"}
 .pull span{display:block;font-size:13px;letter-spacing:.12em;color:var(--sub)}.pull span::before{content:"— "}
