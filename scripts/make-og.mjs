@@ -49,6 +49,13 @@ for (const [id, q] of Object.entries(quotes)) {
     await p.screenshot({ path: path.join(OUT, `${id}${suf}.jpg`), type: 'jpeg', quality: 86 });
     await p.close();
   }
+  // 検索結果・Discover 用の写真だけの画像（4:3 と 1:1。文字なし）
+  for (const [h, suf] of [[900, '-4x3'], [1200, '-1x1']]) {
+    const p = await b.newPage({ viewport: { width: 1200, height: h } });
+    await p.setContent(`<body style="margin:0;width:1200px;height:${h}px;background:url('data:image/jpeg;base64,${fs.readFileSync(path.join(ROOT, a.photo)).toString('base64')}') ${pos} / cover no-repeat"></body>`);
+    await p.screenshot({ path: path.join(OUT, `${id}${suf}.jpg`), type: 'jpeg', quality: 86 });
+    await p.close();
+  }
   console.log('作成：', id);
 }
 await b.close();

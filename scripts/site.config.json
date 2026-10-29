@@ -19,5 +19,7 @@
     "_note": "GA4 の測定ID（G-から始まる）。空ならタグを出さない。Vercel の環境変数 GA4_ID があればそちらを優先。4サイト共通の1つの GA4 に送り、media_id で見分ける",
     "ga4MeasurementId": "",
     "mediaId": "vop"
-  }
+  },
+  "operator": "",
+  "_operator_note": "外部送信ページに出す運営者名（会社名や屋号と問い合わせ先）。竹内さんに確かめて入れる。空なら publisher を出す"
 }

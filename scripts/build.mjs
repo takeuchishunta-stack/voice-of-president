@@ -5,6 +5,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import vm from 'node:vm';
+import crypto from 'node:crypto';
 
 const ROOT = path.resolve(path.dirname(new URL(import.meta.url).pathname), '..');
 const cfg = JSON.parse(fs.readFileSync(path.join(ROOT, 'scripts/site.config.json'), 'utf8'));
@@ -15,8 +16,8 @@ const GA4 = String(process.env.GA4_ID || AN.ga4MeasurementId || '').trim();
 const MEDIA = AN.mediaId || 'vop';
 if (GA4 && !/^G-[A-Z0-9]{4,}$/.test(GA4)) throw new Error(`GA4 の測定ID の形が違います：${GA4}`);
 // GA4 のタグ。測定ID が空なら何も出さない。記事のイベントは /assets/article.js が送る
-const gaTag = () => GA4 ? `<script async src="https://www.googletagmanager.com/gtag/js?id=${GA4}"></script>
-<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','${GA4}',{media_id:'${MEDIA}'});</script>
+const gaTag = (articleId = '') => GA4 ? `<script async src="https://www.googletagmanager.com/gtag/js?id=${GA4}"></script>
+<script data-article="${articleId}">window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','${GA4}',{allow_google_signals:false,allow_ad_personalization_signals:false,media_id:'${MEDIA}',article_id:(document.currentScript&&document.currentScript.dataset.article)||''});</script>
 ` : '';
 
 const ctx = { window: {} };
@@ -37,11 +38,20 @@ const grams = s => { s = norm(s); const g = new Set(); for (let i = 0; i < s.len
 const sim = (a, b) => { const x = grams(a.category + a.subtitle), y = grams(b.category + b.subtitle); let n = 0; x.forEach(v => y.has(v) && n++); return n / Math.max(1, Math.min(x.size, y.size)); };
 const related = a => list.filter(b => b.id !== a.id).map(b => ({ b, s: sim(a, b) })).sort((p, q) => q.s - p.s || iso(q.b.date).localeCompare(iso(p.b.date))).slice(0, 3).map(x => x.b);
 // 見出し画像（scripts/make-og.mjs で作った images/og/{id}.jpg）があれば SNS の表示画像に使う
-const og = a => fs.existsSync(path.join(ROOT, `images/og/${a.id}.jpg`)) ? { wide: abs(`images/og/${a.id}.jpg`), w169: abs(`images/og/${a.id}-675.jpg`) } : null;
+const ogv = f => { const p = path.join(ROOT, f); return fs.existsSync(p) ? abs(f) + '?v=' + crypto.createHash('md5').update(fs.readFileSync(p)).digest('hex').slice(0, 8) : null; };
+const og = a => {
+  if (!okFor(a)) return null;
+  const wide = ogv(`images/og/${a.id}.jpg`); if (!wide) return null;
+  return { wide, imgs: [ogv(`images/og/${a.id}-675.jpg`), ogv(`images/og/${a.id}-4x3.jpg`), ogv(`images/og/${a.id}-1x1.jpg`)].filter(Boolean) };
+};
 // 強調引用（scripts/og-quotes.json の pull）。本文に無い言葉なら書き出しを止める
 const QJ = fs.existsSync(path.join(ROOT, 'scripts/og-quotes.json')) ? JSON.parse(fs.readFileSync(path.join(ROOT, 'scripts/og-quotes.json'), 'utf8')) : {};
+// 本番では、本人の了承（approved に日付）がある記事だけ見出し画像と強調引用を出す。プレビュー・手元では全部出す
+const PROD = process.env.VERCEL_ENV === 'production';
+const okFor = a => !PROD || Boolean((QJ.approved || {})[a.id]);
+const ogAltOf = a => { const q = (QJ.quotes || {})[a.id]; return q ? `${cfg.siteName}｜${a.name}さん「${q.replace(/\|/g, '').replace(/。$/, '')}」` : `${a.name}さんの写真`; };
 const pullOf = a => {
-  const q = (QJ.pull || {})[a.id]; if (!q) return '';
+  const q = okFor(a) && (QJ.pull || {})[a.id]; if (!q) return '';
   if (!(a.blocks || []).some(b => (b.x || '').includes(q))) throw new Error(`強調引用が本文にありません（${a.id}）：${q}`);
   return `<aside class="pull" aria-label="${esc(a.name)}さんの言葉"><p>${esc(q.replace(/。$/, ''))}</p><span>${esc(a.name)}</span></aside>`;
 };
@@ -49,14 +59,15 @@ const pullOf = a => {
 const withPull = a => {
   const bl = (a.blocks || []).map(block), pq = pullOf(a);
   if (!pq) return bl;
-  const hs = (a.blocks || []).map((b, i) => b.t === 'h' ? i : -1).filter(i => i > 0);
+  const B = a.blocks || [];
+  const hs = B.map((b, i) => b.t === 'h' ? i : -1).filter(i => i > 0 && B[i - 1].t !== 'q');
   if (!hs.length) return bl;
   const at = hs.reduce((m, i) => Math.abs(i - bl.length * 0.45) < Math.abs(m - bl.length * 0.45) ? i : m, hs[0]);
   bl.splice(at, 0, pq); return bl;
 };
 const sisters = a => net.articles.filter(n => n.name === norm(a.name));
 
-const head = ({ title, desc, canonical, image, ogSize = false, type = 'website', jsonld = [], articleId = '' }) => `<!DOCTYPE html>
+const head = ({ title, desc, canonical, image, ogSize = false, ogAlt = '', type = 'website', jsonld = [], articleId = '' }) => `<!DOCTYPE html>
 <html lang="ja">
 <head>
 <meta charset="utf-8">
@@ -70,7 +81,7 @@ const head = ({ title, desc, canonical, image, ogSize = false, type = 'website',
 <meta property="og:description" content="${esc(desc)}">
 <meta property="og:url" content="${esc(canonical)}">
 <meta name="robots" content="max-image-preview:large">
-${image ? `<meta property="og:image" content="${esc(image)}">${ogSize ? `\n<meta property="og:image:width" content="1200">\n<meta property="og:image:height" content="630">` : ''}\n<meta name="twitter:card" content="summary_large_image">` : '<meta name="twitter:card" content="summary">'}
+${image ? `<meta property="og:image" content="${esc(image)}">${ogSize ? `\n<meta property="og:image:width" content="1200">\n<meta property="og:image:height" content="630">\n<meta property="og:image:alt" content="${esc(ogAlt)}">` : ''}\n<meta name="twitter:card" content="summary_large_image">` : '<meta name="twitter:card" content="summary">'}
 <meta property="og:locale" content="ja_JP">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -78,7 +89,7 @@ ${image ? `<meta property="og:image" content="${esc(image)}">${ogSize ? `\n<meta
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@400;600;700&family=Cormorant+Garamond:wght@400;500&family=Zen+Kaku+Gothic+New:wght@400;500&display=swap"></noscript>
 <link rel="stylesheet" href="/assets/article.css">
 ${jsonld.map(j => `<script type="application/ld+json">${JSON.stringify(j).replace(/</g, '\\u003c')}</script>`).join('\n')}
-${gaTag()}</head>
+${gaTag(articleId)}</head>
 <body data-media="${MEDIA}"${articleId ? ` data-article="${esc(articleId)}"` : ''}>
 <a class="skip" href="#main">本文へ</a>
 <header class="hd">
@@ -88,6 +99,7 @@ ${gaTag()}</head>
 
 const foot = `<footer class="ft">
   <a class="ft-logo" href="/">VOICE OF PRESIDENT</a>
+  <a href="/privacy.html">プライバシーと外部送信</a>
   <span>© ${new Date().getFullYear()} ${esc(cfg.publisher)}</span>
 </footer>
 <script src="/assets/article.js" defer></script>
@@ -138,12 +150,12 @@ function articlePage(a, i) {
   const share = encodeURIComponent(canonical), shareT = encodeURIComponent(`${plainTitle(a.title)}｜${a.name}さん（${a.company}）`);
   const o = og(a);
   const jsonld = [
-    { '@context': 'https://schema.org', '@type': 'Article', headline: clip(plainTitle(a.title) + '｜' + a.name, 110), description: desc, image: o ? [o.w169, o.wide, abs(a.photo)] : [abs(a.photo)], datePublished: `${date}T09:00:00+09:00`, dateModified: `${date}T09:00:00+09:00`, mainEntityOfPage: canonical, author: { '@type': 'Organization', name: cfg.publisher, url: SITE + '/' }, publisher: { '@type': 'Organization', name: cfg.siteName, url: SITE + '/' }, about: { '@type': 'Person', name: a.name, jobTitle: a.role, worksFor: { '@type': 'Organization', name: a.company, ...(c && c.url ? { url: c.url } : {}) } } },
+    { '@context': 'https://schema.org', '@type': 'Article', headline: clip(plainTitle(a.title) + '｜' + a.name, 110), description: desc, image: o ? o.imgs : [abs(a.photo)], datePublished: `${date}T09:00:00+09:00`, dateModified: `${date}T09:00:00+09:00`, mainEntityOfPage: canonical, author: { '@type': 'Organization', name: cfg.publisher, url: SITE + '/' }, publisher: { '@type': 'Organization', name: cfg.siteName, url: SITE + '/' }, about: { '@type': 'Person', name: a.name, jobTitle: a.role, worksFor: { '@type': 'Organization', name: a.company, ...(c && c.url ? { url: c.url } : {}) } } },
     { '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: [{ '@type': 'ListItem', position: 1, name: cfg.siteName, item: SITE + '/' }, { '@type': 'ListItem', position: 2, name: '連載一覧', item: SITE + '/archive.html' }, { '@type': 'ListItem', position: 3, name: `${a.name}さん` }] }
   ];
   const rows = c ? [['所在地', c.address], ['連絡先', c.tel], ['代表者', c.rep], ['設立', c.established], ['事業内容', c.business], ['許可番号', c.license]].filter(([, v]) => v) : [];
 
-  return head({ title, desc, canonical, image: o ? o.wide : abs(a.photo), ogSize: !!o, type: 'article', jsonld, articleId: a.id }) + `
+  return head({ title, desc, canonical, image: o ? o.wide : abs(a.photo), ogSize: !!o, ogAlt: ogAltOf(a), type: 'article', jsonld, articleId: a.id }) + `
 <main id="main">
   <nav class="crumb" aria-label="パンくず"><a href="/">トップ</a><span>›</span><a href="/archive.html">連載一覧</a><span>›</span><span>${esc(a.name)}さん</span></nav>
   <section class="hero">
@@ -182,9 +194,9 @@ function articlePage(a, i) {
 
   ${prBox()}
 
-  ${sis.length ? `<section class="sis"><h2 class="sec-h"><span class="eyebrow">ANOTHER ANGLE</span>${esc(a.name)}さんの別の切り口の記事</h2><ul>${sis.map(s => `<li><a href="${esc(s.url)}" target="_blank" rel="noopener" data-dest="${esc(s.site)}"><span>${esc(s.site)}｜${esc(s.angle)}</span>${esc(s.title)}</a></li>`).join('')}</ul></section>` : ''}
+  ${sis.length ? `<section class="sis"><h2 class="sec-h"><span class="eyebrow">ANOTHER ANGLE</span>${esc(a.name)}さんの別の切り口の記事</h2><ul>${sis.map(s => `<li><a href="${esc(s.url)}" target="_blank" rel="noopener" data-dest="${esc(s.media_id || s.site)}"><span>${esc(s.site)}｜${esc(s.angle)}</span>${esc(s.title)}</a></li>`).join('')}</ul></section>` : ''}
 
-  <section class="net"><h2 class="sec-h"><span class="eyebrow">SISTER MEDIA</span>姉妹メディア</h2><ul>${net.sites.map(s => `<li><a href="${esc(s.url)}" target="_blank" rel="noopener" data-dest="${esc(s.site || s.name)}"><strong>${esc(s.name)}</strong><span>${esc(s.desc)}</span></a></li>`).join('')}</ul></section>
+  <section class="net"><h2 class="sec-h"><span class="eyebrow">SISTER MEDIA</span>姉妹メディア</h2><ul>${net.sites.map(s => `<li><a href="${esc(s.url)}" target="_blank" rel="noopener" data-dest="${esc(s.media_id || s.name)}"><strong>${esc(s.name)}</strong><span>${esc(s.desc)}</span></a></li>`).join('')}</ul></section>
 
   <p class="back"><a class="btn" href="/archive.html">連載一覧へ</a><a href="/">トップページ</a></p>
 </main>
@@ -216,6 +228,27 @@ function searchPage() {
 ` + foot;
 }
 
+// 外部送信の公表（電気通信事業法の外部送信規律）。GA4 は測定ID がある時だけ載せる
+function privacyPage() {
+  const rows = [
+    ['Google Fonts（Google LLC）', '文字の表示のため、閲覧した端末の IP アドレス・ブラウザの種類などが送られます。', '文字を表示するため', 'https://policies.google.com/privacy?hl=ja'],
+    ['Vercel Web Analytics（Vercel Inc.）', '見たページ・参照元・端末やブラウザの種類・国など（個人を特定しない形で集計）。', 'サイトの利用状況を知り、改善するため', 'https://vercel.com/legal/privacy-policy'],
+    ...(GA4 ? [['Google アナリティクス（Google LLC）', '見たページ・参照元・滞在時間・記事の読了や関連記事・広告枠・シェアのクリック・端末やブラウザの種類・おおよその地域・Cookie の識別子など。姉妹メディア（NEXT PRESIDENTS・Medical Voices・ATHLETE BRIDGE）と同じ1つの計測で集計します。', 'サイトの利用状況を知り、記事と導線を改善するため', 'https://policies.google.com/technologies/partner-sites?hl=ja']] : [])
+  ];
+  return head({ title: `プライバシーと外部送信 ― ${cfg.siteName}`, desc: `${cfg.siteName}で利用者の情報を外部に送る仕組みについて。`, canonical: SITE + '/privacy.html' }) + `
+<main id="main" class="list pv">
+  <h1 class="list-h"><span class="eyebrow">PRIVACY</span>プライバシーと外部送信</h1>
+  <div class="body">
+  <p>${esc(cfg.siteName)}では、サイトの表示と改善のために、次のサービスに閲覧の情報を送っています。氏名やメールアドレスなど、個人を直接特定する情報は送りません。</p>
+  ${rows.map(([n, i, w, u]) => `<h2 class="h">${esc(n)}</h2><p>送る情報：${esc(i)}</p><p>目的：${esc(w)}</p><p>送り先の方針：<a href="${u}" target="_blank" rel="noopener">${esc(u)}</a></p>`).join('\n  ')}
+  ${GA4 ? `<p>Google アナリティクスへの送信を止めたい時は、<a href="https://tools.google.com/dlpage/gaoptout?hl=ja" target="_blank" rel="noopener">Google アナリティクス オプトアウト アドオン</a>を使うか、ブラウザで Cookie を無効にしてください。</p>` : ''}
+  ${GA4 ? `<p>Google アナリティクスは、Google の広告向けの機能（Google シグナル・広告のパーソナライズ）を使わない設定にしています。</p>` : ''}
+  <p>運営：${esc(cfg.operator || cfg.publisher)}</p>
+  </div>
+</main>
+` + foot;
+}
+
 function write(rel, html) { const f = path.join(ROOT, rel); fs.mkdirSync(path.dirname(f), { recursive: true }); fs.writeFileSync(f, html); }
 
 // トップ（手書きの index.html）にも同じタグを差す。印の間を毎回作り直すので、ID が空なら印ごと消えて元の形に戻る
@@ -228,6 +261,7 @@ fs.rmSync(path.join(ROOT, 'interview'), { recursive: true, force: true });
 list.forEach((a, i) => write(`interview/${a.id}/index.html`, articlePage(a, i)));
 write('archive.html', archivePage());
 write('search.html', searchPage());
+write('privacy.html', privacyPage());
 const urls = [['/', iso(list[0].date)], ['/archive.html', iso(list[0].date)], ...list.map(a => [url(a), iso(a.date)])];
 write('sitemap.xml', `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls.map(([u, d]) => `  <url><loc>${SITE}${u}</loc>${d ? `<lastmod>${d}</lastmod>` : ''}</url>`).join('\n')}\n</urlset>\n`);
 write('robots.txt', `User-agent: *\nAllow: /\nDisallow: /scripts/\n\nSitemap: ${SITE}/sitemap.xml\n`);

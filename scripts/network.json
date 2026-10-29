@@ -4,17 +4,20 @@
   {
    "name": "NEXT PRESIDENTS",
    "desc": "後継ぎ経営者インタビュー",
-   "url": "https://next-presidents.vercel.app/"
+   "url": "https://next-presidents.vercel.app/",
+   "media_id": "np"
   },
   {
    "name": "ATHLETE BRIDGE",
    "desc": "アスリートのセカンドキャリアを、経営者が語る",
-   "url": "https://superlative-centaur-49f503.netlify.app/"
+   "url": "https://superlative-centaur-49f503.netlify.app/",
+   "media_id": "ab"
   },
   {
    "name": "Medical Voices",
    "desc": "クリニック経営者の声",
-   "url": "https://medical-voices.vercel.app/"
+   "url": "https://medical-voices.vercel.app/",
+   "media_id": "mv"
   }
  ],
  "articles": [
@@ -23,126 +26,144 @@
    "angle": "アスリートから経営者へ",
    "name": "原誠",
    "title": "プレイヤー目線と徹底した品質へのこだわり。設立30年、スポーツ施設施工のプロフェッショナルが見据える未来",
-   "url": "https://superlative-centaur-49f503.netlify.app/#hara"
+   "url": "https://superlative-centaur-49f503.netlify.app/#hara",
+   "media_id": "ab"
   },
   {
    "site": "ATHLETE BRIDGE",
    "angle": "アスリートから経営者へ",
    "name": "横山貴明",
    "title": "「勝つか、学ぶか」元プロ野球選手が挑む、福島を支えるインフラメンテナンスと第二の組織づくり",
-   "url": "https://superlative-centaur-49f503.netlify.app/#yokoyama"
+   "url": "https://superlative-centaur-49f503.netlify.app/#yokoyama",
+   "media_id": "ab"
   },
   {
    "site": "ATHLETE BRIDGE",
    "angle": "アスリートから経営者へ",
    "name": "色川冬馬",
    "title": "24歳で代表監督、そしてMLBスカウトへ。プロ野球GMを目指す異端のキャリア",
-   "url": "https://superlative-centaur-49f503.netlify.app/#irokawa"
+   "url": "https://superlative-centaur-49f503.netlify.app/#irokawa",
+   "media_id": "ab"
   },
   {
    "site": "ATHLETE BRIDGE",
    "angle": "アスリートから経営者へ",
    "name": "溝渕善彦",
    "title": "「できるかできないかではなく、やるかやらないか」62歳でフィジーク挑戦、AIを駆使する異端のコンサルタントが辿り着いた「自分らしさ」",
-   "url": "https://superlative-centaur-49f503.netlify.app/#mizobuchi"
+   "url": "https://superlative-centaur-49f503.netlify.app/#mizobuchi",
+   "media_id": "ab"
   },
   {
    "site": "ATHLETE BRIDGE",
    "angle": "アスリートから経営者へ",
    "name": "清野潤",
    "title": "「大学1年でつくったチームを、失いたくなかった」——27年かけて育てたブランドとコミュニティ",
-   "url": "https://superlative-centaur-49f503.netlify.app/#seino"
+   "url": "https://superlative-centaur-49f503.netlify.app/#seino",
+   "media_id": "ab"
   },
   {
    "site": "ATHLETE BRIDGE",
    "angle": "アスリートから経営者へ",
    "name": "遠藤靖浩",
    "title": "「自分の名前で勝負したい」——GLOW SHIFT・遠藤さんが野球からキャリア支援へたどり着くまで",
-   "url": "https://superlative-centaur-49f503.netlify.app/#endo"
+   "url": "https://superlative-centaur-49f503.netlify.app/#endo",
+   "media_id": "ab"
   },
   {
    "site": "ATHLETE BRIDGE",
    "angle": "アスリートから経営者へ",
    "name": "斎藤貴史",
    "title": "「みんなと同じというのが、好きじゃなかったんです」——元プロテニスプレーヤー・斎藤貴史さんが選び続けた、人と違う道",
-   "url": "https://superlative-centaur-49f503.netlify.app/#saito"
+   "url": "https://superlative-centaur-49f503.netlify.app/#saito",
+   "media_id": "ab"
   },
   {
    "site": "ATHLETE BRIDGE",
    "angle": "アスリートから経営者へ",
    "name": "増本重孝",
    "title": "「一塁まで全力で走れと教えている自分は、仕事で全力で走れているか」——19歳の決意から積み上げた、増本重孝さんの30年",
-   "url": "https://superlative-centaur-49f503.netlify.app/#masumoto"
+   "url": "https://superlative-centaur-49f503.netlify.app/#masumoto",
+   "media_id": "ab"
   },
   {
    "site": "ATHLETE BRIDGE",
    "angle": "アスリートから経営者へ",
    "name": "里見允二",
    "title": "「27年後の創業100年に向けて、僕は『SATOMI CITY』をつくろうと思っています」——サトミ紙工・里見さんが段ボールの会社で描く、人が育つ街",
-   "url": "https://superlative-centaur-49f503.netlify.app/#satomi"
+   "url": "https://superlative-centaur-49f503.netlify.app/#satomi",
+   "media_id": "ab"
   },
   {
    "site": "ATHLETE BRIDGE",
    "angle": "アスリートから経営者へ",
    "name": "松岡翔太",
    "title": "「人と人とのつながりの輪を」——エボレジャパン・松岡さんが10万円から15年で広げた4つの事業",
-   "url": "https://superlative-centaur-49f503.netlify.app/#matsuoka"
+   "url": "https://superlative-centaur-49f503.netlify.app/#matsuoka",
+   "media_id": "ab"
   },
   {
    "site": "ATHLETE BRIDGE",
    "angle": "アスリートから経営者へ",
    "name": "青沼広己",
    "title": "「生涯アスリートでいたい」——Athlifes・青沼さんが、好きなものだけで価値をつくるまで",
-   "url": "https://superlative-centaur-49f503.netlify.app/#aonuma"
+   "url": "https://superlative-centaur-49f503.netlify.app/#aonuma",
+   "media_id": "ab"
   },
   {
    "site": "ATHLETE BRIDGE",
    "angle": "アスリートから経営者へ",
    "name": "高橋昭仁",
    "title": "「好きなことを一つ貫いて、仕事にしていけ」——パーソナルトレーナー・高橋昭仁さんが、家業の継承と別れを経て見つめ直した原点",
-   "url": "https://superlative-centaur-49f503.netlify.app/#takahashi"
+   "url": "https://superlative-centaur-49f503.netlify.app/#takahashi",
+   "media_id": "ab"
   },
   {
    "site": "Medical Voices",
    "angle": "クリニック経営",
    "name": "武井新吾",
    "title": "「天然の歯に勝る治療は、ありません」——51歳で選んだ、子どもの歯を守る場所",
-   "url": "https://medical-voices.vercel.app/#hoshiiro"
+   "url": "https://medical-voices.vercel.app/#hoshiiro",
+   "media_id": "mv"
   },
   {
    "site": "NEXT PRESIDENTS",
    "angle": "後継ぎ経営者",
    "name": "横山貴明",
    "title": "「勝つか、学ぶか」——元プロ野球選手が挑む、福島のインフラと第二の組織づくり",
-   "url": "https://next-presidents.vercel.app/articles/001-yokoyama.html"
+   "url": "https://next-presidents.vercel.app/articles/001-yokoyama.html",
+   "media_id": "np"
   },
   {
    "site": "NEXT PRESIDENTS",
    "angle": "後継ぎ経営者",
    "name": "斎藤貴史",
    "title": "「みんなと同じというのが、好きじゃなかったんです」",
-   "url": "https://next-presidents.vercel.app/articles/002-saito.html"
+   "url": "https://next-presidents.vercel.app/articles/002-saito.html",
+   "media_id": "np"
   },
   {
    "site": "NEXT PRESIDENTS",
    "angle": "後継ぎ経営者",
    "name": "今西俊明",
    "title": "「現状維持は衰退」——印刷会社に持ち込んだ、2本目の柱",
-   "url": "https://next-presidents.vercel.app/articles/003-imanishi.html"
+   "url": "https://next-presidents.vercel.app/articles/003-imanishi.html",
+   "media_id": "np"
   },
   {
    "site": "NEXT PRESIDENTS",
    "angle": "後継ぎ経営者",
    "name": "里見允二",
    "title": "「27年後の創業100年に向けて、僕は『SATOMI CITY』をつくろうと思っています」",
-   "url": "https://next-presidents.vercel.app/articles/004-satomi.html"
+   "url": "https://next-presidents.vercel.app/articles/004-satomi.html",
+   "media_id": "np"
   },
   {
    "site": "NEXT PRESIDENTS",
    "angle": "後継ぎ経営者",
    "name": "平岡国彦",
    "title": "「当たり前のことを当たり前にするから、その次へのステップアップがあるんだよ」",
-   "url": "https://next-presidents.vercel.app/articles/005-hiraoka.html"
+   "url": "https://next-presidents.vercel.app/articles/005-hiraoka.html",
+   "media_id": "np"
   }
  ]
 }

@@ -13,10 +13,10 @@
 
   // シェア
   document.querySelectorAll('[data-copy]').forEach(b => b.addEventListener('click', async () => {
-    track('share_click', { placement: 'share', destination_media: 'copy' });
+    track('share_click', { placement: 'share', share_via: 'copy' });
     try { await navigator.clipboard.writeText(b.dataset.copy); b.textContent = 'コピーしました'; } catch (e) { prompt('URL', b.dataset.copy); }
   }));
-  onClick('.share a', a => track('share_click', { placement: 'share', destination_media: a.textContent.trim().toLowerCase() }));
+  onClick('.share a', a => track('share_click', { placement: 'share', share_via: a.textContent.trim().toLowerCase() }));
 
   // サイト内の回遊（関連記事・次の記事）
   onClick('.rel a', a => track('related_article_click', { placement: 'related', destination_media: base.media_id, link_url: a.getAttribute('href') }));
