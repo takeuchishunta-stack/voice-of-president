@@ -4,27 +4,490 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>連載一覧 ― VOICE OF PRESIDENT</title>
+<meta name="description" content="VOICE OF PRESIDENTのインタビュー記事一覧。業種やお名前で絞り込み、気になる経営者の歩みを探せます。">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@400;600;800&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300&family=Zen+Kaku+Gothic+New:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
-  body { margin:0; background:#F7F4EF; color:#1B1614; font-family:'Zen Kaku Gothic New',sans-serif; -webkit-font-smoothing:antialiased; }
+  body { margin:0; background:#F7F4EF; color:#1B1614; -webkit-font-smoothing:antialiased; }
   a { color:#8E1D22; text-decoration:none; }
-  header { display:flex; align-items:center; justify-content:space-between; padding:26px 56px; border-bottom:1px solid rgba(27,22,20,.1); }
-  main { padding:120px 56px; text-align:center; }
-  h1 { font-family:'Shippori Mincho',serif; font-weight:600; font-size:32px; letter-spacing:.08em; }
-  p { color:rgba(27,22,20,.6); }
+  .vop-chip { font-family:'Zen Kaku Gothic New',sans-serif; font-size:12px; letter-spacing:.04em; color:#1B1614; background:#FFFFFF; border:1px solid rgba(27,22,20,.16); border-radius:999px; padding:8px 16px; cursor:pointer; white-space:nowrap; transition:background .15s,border-color .15s,color .15s; }
+  .vop-chip:hover { border-color:#8E1D22; }
+  .vop-chip.active { background:#8E1D22; border-color:#8E1D22; color:#FFF8F3; }
+  .vop-chip-n { opacity:.55; font-size:10.5px; margin-left:2px; }
+  .vop-card { display:flex; flex-direction:column; color:inherit; background:#FFFFFF; border:1px solid rgba(27,22,20,.1); transition:box-shadow .2s,transform .2s; }
+  .vop-card:hover { box-shadow:0 14px 30px rgba(27,22,20,.12); transform:translateY(-2px); }
+  #vop-grid { display:grid; grid-template-columns:repeat(3, 1fr); gap:28px; }
+  #vop-search { font-family:'Zen Kaku Gothic New',sans-serif; font-size:13px; letter-spacing:.06em; color:#1B1614; border:1px solid rgba(27,22,20,.2); background:#FFFFFF; padding:13px 18px; outline:0; width:100%; box-sizing:border-box; }
+  #vop-search:focus { border-color:#8E1D22; }
+  #vop-empty { display:none; text-align:center; padding:60px 0; color:rgba(27,22,20,.5); font-size:13px; letter-spacing:.08em; }
 </style>
 </head>
 <body>
-<header>
-  <span style="font-family:'Cormorant Garamond',serif; font-size:21px; letter-spacing:.3em; color:#8E1D22;">VOICE OF PRESIDENT</span>
-  <a href="index.html" style="font-size:12.5px; letter-spacing:.14em; color:rgba(27,22,20,.7);">トップへ戻る</a>
-</header>
-<main>
-  <h1>連載一覧</h1>
-  <p>このページは準備中です。近日公開予定です。</p>
-</main>
+
+<section style="padding:0; display:flex; flex-direction:column; font-family:'Zen Kaku Gothic New',sans-serif; background:#F7F4EF; overflow-x:hidden;">
+  <div id="vop-scaler" style="width:1240px; transform-origin:top left; margin:0 auto;">
+  <div id="vop-page" style="width:1240px; background:#FFFFFF;">
+
+    <header style="display:flex; align-items:center; justify-content:space-between; padding:26px 56px; border-bottom:1px solid rgba(27,22,20,.1); background:#FFFFFF;">
+      <div style="display:flex; align-items:baseline; gap:16px;">
+        <a href="/" style="font-family:'Cormorant Garamond',serif; font-size:21px; letter-spacing:.3em; color:#8E1D22;">VOICE OF PRESIDENT</a>
+        <span style="font-family:'Shippori Mincho',serif; font-size:11px; letter-spacing:.34em; color:rgba(27,22,20,.5);">経営者に、聞く。</span>
+      </div>
+      <div style="display:flex; align-items:center; gap:28px; white-space:nowrap;">
+        <nav style="display:flex; gap:30px; font-size:12.5px; letter-spacing:.14em; color:rgba(27,22,20,.7);"><span style="color:#8E1D22;">連載一覧</span><span>会社概要</span><span>お問い合わせ</span></nav>
+      </div>
+    </header>
+
+    <div style="padding:72px 56px 0;">
+      <div style="display:flex; align-items:baseline; gap:18px;">
+        <span style="font-family:'Cormorant Garamond',serif; font-size:13px; letter-spacing:.34em; color:#B08A4A;">ARCHIVE</span>
+        <h1 style="margin:0; font-family:'Shippori Mincho',serif; font-size:30px; font-weight:600; letter-spacing:.08em;">連載一覧</h1>
+      </div>
+      <p style="margin:16px 0 0; font-size:13px; line-height:2; color:rgba(27,22,20,.6); max-width:640px;">業種やお名前、会社名で絞り込んで、気になる経営者のインタビューを探せます。</p>
+    </div>
+
+    <div style="padding:36px 56px 0;">
+      <input id="vop-search" type="search" placeholder="名前・会社名・キーワードで検索">
+    </div>
+
+    <div style="padding:22px 56px 0; display:flex; flex-wrap:wrap; gap:10px; align-items:center;">
+      <span style="font-size:11px; letter-spacing:.14em; color:rgba(27,22,20,.45); margin-right:4px;">業種で絞り込む：</span>
+      <button type="button" class="vop-chip" data-tag="AI活用支援">AI活用支援 <span class="vop-chip-n">2</span></button><button type="button" class="vop-chip" data-tag="Web開発">Web開発 <span class="vop-chip-n">1</span></button><button type="button" class="vop-chip" data-tag="アスリート支援業">アスリート支援業 <span class="vop-chip-n">1</span></button><button type="button" class="vop-chip" data-tag="インフラ">インフラ <span class="vop-chip-n">1</span></button><button type="button" class="vop-chip" data-tag="キャリア支援">キャリア支援 <span class="vop-chip-n">1</span></button><button type="button" class="vop-chip" data-tag="コーチング業">コーチング業 <span class="vop-chip-n">1</span></button><button type="button" class="vop-chip" data-tag="スポーツアパレル">スポーツアパレル <span class="vop-chip-n">1</span></button><button type="button" class="vop-chip" data-tag="スポーツウェア製造業">スポーツウェア製造業 <span class="vop-chip-n">1</span></button><button type="button" class="vop-chip" data-tag="スポーツ施設施工">スポーツ施設施工 <span class="vop-chip-n">1</span></button><button type="button" class="vop-chip" data-tag="パーソナルトレーニング業">パーソナルトレーニング業 <span class="vop-chip-n">1</span></button><button type="button" class="vop-chip" data-tag="マーケティング支援業">マーケティング支援業 <span class="vop-chip-n">1</span></button><button type="button" class="vop-chip" data-tag="ローカルマーケティング">ローカルマーケティング <span class="vop-chip-n">1</span></button><button type="button" class="vop-chip" data-tag="医療人材育成">医療人材育成 <span class="vop-chip-n">1</span></button><button type="button" class="vop-chip" data-tag="印刷">印刷 <span class="vop-chip-n">1</span></button><button type="button" class="vop-chip" data-tag="解体工事">解体工事 <span class="vop-chip-n">1</span></button><button type="button" class="vop-chip" data-tag="害虫対策">害虫対策 <span class="vop-chip-n">1</span></button><button type="button" class="vop-chip" data-tag="求人集客支援業">求人集客支援業 <span class="vop-chip-n">1</span></button><button type="button" class="vop-chip" data-tag="教育事業">教育事業 <span class="vop-chip-n">1</span></button><button type="button" class="vop-chip" data-tag="業務改善">業務改善 <span class="vop-chip-n">1</span></button><button type="button" class="vop-chip" data-tag="金属リサイクル業">金属リサイクル業 <span class="vop-chip-n">1</span></button><button type="button" class="vop-chip" data-tag="経営コンサルティング">経営コンサルティング <span class="vop-chip-n">1</span></button><button type="button" class="vop-chip" data-tag="経営コンサルティング業">経営コンサルティング業 <span class="vop-chip-n">1</span></button><button type="button" class="vop-chip" data-tag="経営伴走業">経営伴走業 <span class="vop-chip-n">1</span></button><button type="button" class="vop-chip" data-tag="建設">建設 <span class="vop-chip-n">1</span></button><button type="button" class="vop-chip" data-tag="研修業">研修業 <span class="vop-chip-n">1</span></button><button type="button" class="vop-chip" data-tag="国際人材育成">国際人材育成 <span class="vop-chip-n">1</span></button><button type="button" class="vop-chip" data-tag="歯科医院経営業">歯科医院経営業 <span class="vop-chip-n">1</span></button><button type="button" class="vop-chip" data-tag="事務代行業">事務代行業 <span class="vop-chip-n">1</span></button><button type="button" class="vop-chip" data-tag="出張買取業">出張買取業 <span class="vop-chip-n">1</span></button><button type="button" class="vop-chip" data-tag="小児歯科医院">小児歯科医院 <span class="vop-chip-n">1</span></button><button type="button" class="vop-chip" data-tag="新卒採用支援">新卒採用支援 <span class="vop-chip-n">1</span></button><button type="button" class="vop-chip" data-tag="人材育成">人材育成 <span class="vop-chip-n">1</span></button><button type="button" class="vop-chip" data-tag="数学教育">数学教育 <span class="vop-chip-n">1</span></button><button type="button" class="vop-chip" data-tag="組織開発業">組織開発業 <span class="vop-chip-n">1</span></button><button type="button" class="vop-chip" data-tag="多角経営業">多角経営業 <span class="vop-chip-n">1</span></button><button type="button" class="vop-chip" data-tag="段ボール製造業">段ボール製造業 <span class="vop-chip-n">1</span></button><button type="button" class="vop-chip" data-tag="地域アプリ">地域アプリ <span class="vop-chip-n">1</span></button><button type="button" class="vop-chip" data-tag="通信機器">通信機器 <span class="vop-chip-n">1</span></button><button type="button" class="vop-chip" data-tag="通信取次業">通信取次業 <span class="vop-chip-n">1</span></button><button type="button" class="vop-chip" data-tag="塗装業">塗装業 <span class="vop-chip-n">1</span></button><button type="button" class="vop-chip" data-tag="不動産">不動産 <span class="vop-chip-n">1</span></button><button type="button" class="vop-chip" data-tag="墓苑コンサルティング">墓苑コンサルティング <span class="vop-chip-n">1</span></button><button type="button" class="vop-chip" data-tag="木造プレハブ建築業">木造プレハブ建築業 <span class="vop-chip-n">1</span></button><button type="button" class="vop-chip" data-tag="和菓子製造業">和菓子製造業 <span class="vop-chip-n">1</span></button>
+      <button type="button" id="vop-clear" style="font-size:11.5px; letter-spacing:.08em; color:#8E1D22; background:none; border:0; border-bottom:1px solid rgba(142,29,34,.4); padding:4px 0; margin-left:8px; cursor:pointer; display:none;">条件をクリア</button>
+    </div>
+
+    <div style="padding:16px 56px 0; font-size:11.5px; letter-spacing:.08em; color:rgba(27,22,20,.5);"><span id="vop-count">31</span>件の記事</div>
+
+    <div id="vop-grid" style="padding:20px 56px 96px;">
+          <a href="/articles/konaka" class="vop-card" data-industries="AI活用支援|経営伴走業" data-search="小中 貴晃 株式会社becheerz 「忙しい社長に、優秀な左腕を」 エンジニアとして社会人のキャリアを歩み始め、営業、事業開発を経て、上場企業子会社の取締役まで務めた小中貴晃さん。2024年3月に株式会社becheerzを立ち上げ、「忙しい社長の左腕」になる事業を展開している。仕事も家族も大切にできる働き方を掲げる歩みを伺った。">
+            <div style="height:280px; overflow:hidden; position:relative;">
+              <img src="images/konaka-hero.jpg" alt="小中 貴晃" loading="lazy" style="width:100%; height:100%; object-fit:cover; object-position:50% 15%;">
+              <span style="position:absolute; left:0; top:14px; font-family:'Cormorant Garamond',serif; font-size:11px; letter-spacing:.26em; color:#8E1D22; background:#FFF8F3; padding:5px 12px; pointer-events:none;">VOL.031</span>
+            </div>
+            <div style="padding:20px 4px 0; display:flex; flex-direction:column; gap:10px; flex:1;">
+              <div style="font-size:11px; letter-spacing:.1em; color:#B08A4A;">AI活用支援 / 経営伴走業</div>
+              <h3 style="margin:0; font-family:'Shippori Mincho',serif; font-size:17px; font-weight:600; line-height:1.6; letter-spacing:.04em; color:#1B1614;">「忙しい社長に、優秀な左腕を」</h3>
+              <span style="font-size:11.5px; letter-spacing:.06em; color:rgba(27,22,20,.55);">株式会社BeCheerz ／ 小中 貴晃</span>
+            </div>
+          </a>
+          <a href="/articles/yokoyamanaotake" class="vop-card" data-industries="AI活用支援|経営コンサルティング業" data-search="横山 尚武 株式会社pathforge 「人生は全部コンテンツ」 25歳で合同会社akushuを創業し、6期目を迎えた横山尚武さん。独立願望はゼロだったという横山さんが、なぜ起業を選び、何に悩み、どのようにして「ai社員派遣」という今の事業にたどり着いたのか。6年の模索の歩みを伺った。">
+            <div style="height:280px; overflow:hidden; position:relative;">
+              <img src="images/yokoyamanaotake-hero.jpg" alt="横山 尚武" loading="lazy" style="width:100%; height:100%; object-fit:cover; object-position:50% 15%;">
+              <span style="position:absolute; left:0; top:14px; font-family:'Cormorant Garamond',serif; font-size:11px; letter-spacing:.26em; color:#8E1D22; background:#FFF8F3; padding:5px 12px; pointer-events:none;">VOL.030</span>
+            </div>
+            <div style="padding:20px 4px 0; display:flex; flex-direction:column; gap:10px; flex:1;">
+              <div style="font-size:11px; letter-spacing:.1em; color:#B08A4A;">AI活用支援 / 経営コンサルティング業</div>
+              <h3 style="margin:0; font-family:'Shippori Mincho',serif; font-size:17px; font-weight:600; line-height:1.6; letter-spacing:.04em; color:#1B1614;">「人生は全部コンテンツ」</h3>
+              <span style="font-size:11.5px; letter-spacing:.06em; color:rgba(27,22,20,.55);">株式会社PathForge ／ 横山 尚武</span>
+            </div>
+          </a>
+          <a href="/articles/haga" class="vop-card" data-industries="ローカルマーケティング|求人集客支援業" data-search="芳賀 崇利 株式会社いまじん 「仕事は、人生を豊かにするための手段」 山形・庄内地方の地域情報サイトを足がかりに、地域に特化した求人・集客支援を手がける株式会社いまじんの芳賀崇利さん。建築現場の職人から営業職へ、そして山形での起業へ。aiで最適な施策を提案する新しいツールにたどり着くまでの歩みを伺った。">
+            <div style="height:280px; overflow:hidden; position:relative;">
+              <img src="images/haga-hero.jpg" alt="芳賀 崇利" loading="lazy" style="width:100%; height:100%; object-fit:cover; object-position:50% 15%;">
+              <span style="position:absolute; left:0; top:14px; font-family:'Cormorant Garamond',serif; font-size:11px; letter-spacing:.26em; color:#8E1D22; background:#FFF8F3; padding:5px 12px; pointer-events:none;">VOL.029</span>
+            </div>
+            <div style="padding:20px 4px 0; display:flex; flex-direction:column; gap:10px; flex:1;">
+              <div style="font-size:11px; letter-spacing:.1em; color:#B08A4A;">ローカルマーケティング / 求人集客支援業</div>
+              <h3 style="margin:0; font-family:'Shippori Mincho',serif; font-size:17px; font-weight:600; line-height:1.6; letter-spacing:.04em; color:#1B1614;">「仕事は、人生を豊かにするための手段」</h3>
+              <span style="font-size:11.5px; letter-spacing:.06em; color:rgba(27,22,20,.55);">株式会社いまじん ／ 芳賀 崇利</span>
+            </div>
+          </a>
+          <a href="/articles/kiyama" class="vop-card" data-industries="歯科医院経営業" data-search="來山 修三 医療法人社団千恵会 都立家政南口歯科 「社員が満足して働いてくれる医院でありたい」 東京・中野区で歯科医院を営む來山修三さん。歯学部と大学院で13年、イギリスと香港への留学、一般企業での勤務と、一直線ではない道のりを歩んできた。開業から8年目のいま見据えているのは、社員が満足して働ける医院づくりだ。">
+            <div style="height:280px; overflow:hidden; position:relative;">
+              <img src="images/kiyama-hero.jpg" alt="來山 修三" loading="lazy" style="width:100%; height:100%; object-fit:cover; object-position:50% 15%;">
+              <span style="position:absolute; left:0; top:14px; font-family:'Cormorant Garamond',serif; font-size:11px; letter-spacing:.26em; color:#8E1D22; background:#FFF8F3; padding:5px 12px; pointer-events:none;">VOL.028</span>
+            </div>
+            <div style="padding:20px 4px 0; display:flex; flex-direction:column; gap:10px; flex:1;">
+              <div style="font-size:11px; letter-spacing:.1em; color:#B08A4A;">歯科医院経営業</div>
+              <h3 style="margin:0; font-family:'Shippori Mincho',serif; font-size:17px; font-weight:600; line-height:1.6; letter-spacing:.04em; color:#1B1614;">「社員が満足して働いてくれる医院でありたい」</h3>
+              <span style="font-size:11.5px; letter-spacing:.06em; color:rgba(27,22,20,.55);">医療法人社団千恵会 都立家政南口歯科 ／ 來山 修三</span>
+            </div>
+          </a>
+          <a href="/articles/igarashi" class="vop-card" data-industries="人材育成|コーチング業" data-search="五十嵐 智子 有限会社imリサーチセンター 「誰もが個性を認め合い、生かし合う社会へ」 看護師として働いたのち、仙台で病院経営に携わった五十嵐智子さん。人が思うように動かない難しさに向き合うなかで出会ったのが、コーチングと、性格の違いを色で見える化するカードだった。「ジョイフル」の愛称で親しまれる五十嵐さんの歩みと、これから描く未来。">
+            <div style="height:280px; overflow:hidden; position:relative;">
+              <img src="images/igarashi-hero.jpg" alt="五十嵐 智子" loading="lazy" style="width:100%; height:100%; object-fit:cover; object-position:50% 15%;">
+              <span style="position:absolute; left:0; top:14px; font-family:'Cormorant Garamond',serif; font-size:11px; letter-spacing:.26em; color:#8E1D22; background:#FFF8F3; padding:5px 12px; pointer-events:none;">VOL.027</span>
+            </div>
+            <div style="padding:20px 4px 0; display:flex; flex-direction:column; gap:10px; flex:1;">
+              <div style="font-size:11px; letter-spacing:.1em; color:#B08A4A;">人材育成 / コーチング業</div>
+              <h3 style="margin:0; font-family:'Shippori Mincho',serif; font-size:17px; font-weight:600; line-height:1.6; letter-spacing:.04em; color:#1B1614;">「誰もが個性を認め合い、生かし合う社会へ」</h3>
+              <span style="font-size:11.5px; letter-spacing:.06em; color:rgba(27,22,20,.55);">有限会社IMリサーチセンター ／ 五十嵐 智子</span>
+            </div>
+          </a>
+          <a href="/articles/hiraoka" class="vop-card" data-industries="解体工事|金属リサイクル業" data-search="平岡 国彦 株式会社zero 「当たり前のことを当たり前に」 18歳、定時制高校に通いながら解体の現場に立った平岡国彦さん。30年以上をこの業界で過ごし、15年ほど前に金属リサイクルの会社・株式会社zeroを立ち上げた。約50人を抱える経営者が語る、居心地の良さと、これから作りたい場所の話。">
+            <div style="height:280px; overflow:hidden; position:relative;">
+              <img src="images/hiraoka-hero.jpg" alt="平岡 国彦" loading="lazy" style="width:100%; height:100%; object-fit:cover; object-position:50% 15%;">
+              <span style="position:absolute; left:0; top:14px; font-family:'Cormorant Garamond',serif; font-size:11px; letter-spacing:.26em; color:#8E1D22; background:#FFF8F3; padding:5px 12px; pointer-events:none;">VOL.026</span>
+            </div>
+            <div style="padding:20px 4px 0; display:flex; flex-direction:column; gap:10px; flex:1;">
+              <div style="font-size:11px; letter-spacing:.1em; color:#B08A4A;">解体工事 / 金属リサイクル業</div>
+              <h3 style="margin:0; font-family:'Shippori Mincho',serif; font-size:17px; font-weight:600; line-height:1.6; letter-spacing:.04em; color:#1B1614;">「当たり前のことを当たり前に」</h3>
+              <span style="font-size:11.5px; letter-spacing:.06em; color:rgba(27,22,20,.55);">株式会社ZERO ／ 平岡 国彦</span>
+            </div>
+          </a>
+          <a href="/articles/fukugami" class="vop-card" data-industries="木造プレハブ建築業" data-search="福上 大輝 fukugami株式会社 「自分が主人公だ」 15歳で職人の世界に入り、23歳で独立、26歳で法人化した福上大輝さん。下請けを一切やらないと決め、木でできた小さな箱型建築「remox」を年間30棟のペースにまで育てた、静岡発の経営者の歩み。">
+            <div style="height:280px; overflow:hidden; position:relative;">
+              <img src="images/fukugami-hero.jpg" alt="福上 大輝" loading="lazy" style="width:100%; height:100%; object-fit:cover; object-position:50% 15%;">
+              <span style="position:absolute; left:0; top:14px; font-family:'Cormorant Garamond',serif; font-size:11px; letter-spacing:.26em; color:#8E1D22; background:#FFF8F3; padding:5px 12px; pointer-events:none;">VOL.025</span>
+            </div>
+            <div style="padding:20px 4px 0; display:flex; flex-direction:column; gap:10px; flex:1;">
+              <div style="font-size:11px; letter-spacing:.1em; color:#B08A4A;">木造プレハブ建築業</div>
+              <h3 style="margin:0; font-family:'Shippori Mincho',serif; font-size:17px; font-weight:600; line-height:1.6; letter-spacing:.04em; color:#1B1614;">「自分が主人公だ」</h3>
+              <span style="font-size:11.5px; letter-spacing:.06em; color:rgba(27,22,20,.55);">Fukugami株式会社 ／ 福上 大輝</span>
+            </div>
+          </a>
+          <a href="/articles/kuramochi" class="vop-card" data-industries="Web開発|多角経営業" data-search="倉持 賢一 合同会社t-box 「僕を使ってくれる経営者が欲しい」 埼玉県秩父市でプログラミング教室とwebシステム開発を営む合同会社t-boxを軸に、芸能事務所の経営から中国向け医薬品輸出まで手がける倉持賢一さん。かつてプロのマジシャンだった倉持さんが、人を起点に事業を育てる「チームワーク」という考え方にたどり着くまでを伺った。">
+            <div style="height:280px; overflow:hidden; position:relative;">
+              <img src="images/kuramochi-hero.jpg" alt="倉持 賢一" loading="lazy" style="width:100%; height:100%; object-fit:cover; object-position:50% 15%;">
+              <span style="position:absolute; left:0; top:14px; font-family:'Cormorant Garamond',serif; font-size:11px; letter-spacing:.26em; color:#8E1D22; background:#FFF8F3; padding:5px 12px; pointer-events:none;">VOL.024</span>
+            </div>
+            <div style="padding:20px 4px 0; display:flex; flex-direction:column; gap:10px; flex:1;">
+              <div style="font-size:11px; letter-spacing:.1em; color:#B08A4A;">Web開発 / 多角経営業</div>
+              <h3 style="margin:0; font-family:'Shippori Mincho',serif; font-size:17px; font-weight:600; line-height:1.6; letter-spacing:.04em; color:#1B1614;">「僕を使ってくれる経営者が欲しい」</h3>
+              <span style="font-size:11.5px; letter-spacing:.06em; color:rgba(27,22,20,.55);">合同会社T-BOX ／ 倉持 賢一</span>
+            </div>
+          </a>
+          <a href="/articles/satotakuto" class="vop-card" data-industries="新卒採用支援|教育事業" data-search="佐藤 拓斗 株式会社brightlink 「種をまいておく」 高校生の新卒採用コンサルティングを手がける株式会社brightlink。代表の佐藤拓斗さんは、大学院でキャリア教育を研究してきた経歴を持つ。採用支援を柱にしながら、その先に学習教室を構想する――遠回りの経歴を持つ経営者が描く道筋。">
+            <div style="height:280px; overflow:hidden; position:relative;">
+              <img src="images/satotakuto-hero.jpg" alt="佐藤 拓斗" loading="lazy" style="width:100%; height:100%; object-fit:cover; object-position:50% 15%;">
+              <span style="position:absolute; left:0; top:14px; font-family:'Cormorant Garamond',serif; font-size:11px; letter-spacing:.26em; color:#8E1D22; background:#FFF8F3; padding:5px 12px; pointer-events:none;">VOL.023</span>
+            </div>
+            <div style="padding:20px 4px 0; display:flex; flex-direction:column; gap:10px; flex:1;">
+              <div style="font-size:11px; letter-spacing:.1em; color:#B08A4A;">新卒採用支援 / 教育事業</div>
+              <h3 style="margin:0; font-family:'Shippori Mincho',serif; font-size:17px; font-weight:600; line-height:1.6; letter-spacing:.04em; color:#1B1614;">「種をまいておく」</h3>
+              <span style="font-size:11.5px; letter-spacing:.06em; color:rgba(27,22,20,.55);">株式会社BrightLink ／ 佐藤 拓斗</span>
+            </div>
+          </a>
+          <a href="/articles/suzuki" class="vop-card" data-industries="数学教育|研修業" data-search="鈴木 伸介 株式会社数学アカデミー 「教えるのではなく、気づかせる」 医学部受験の数学家庭教師から、企業向け研修、一般向け数学教育まで3つの軸で事業を展開する鈴木伸介さん。中小企業診断士としての独立を経て、創業11年目を迎える株式会社数学アカデミーが目指すのは、数学の“心のトゲ”を和らげることだ。">
+            <div style="height:280px; overflow:hidden; position:relative;">
+              <img src="images/suzuki-hero.jpg" alt="鈴木 伸介" loading="lazy" style="width:100%; height:100%; object-fit:cover; object-position:50% 15%;">
+              <span style="position:absolute; left:0; top:14px; font-family:'Cormorant Garamond',serif; font-size:11px; letter-spacing:.26em; color:#8E1D22; background:#FFF8F3; padding:5px 12px; pointer-events:none;">VOL.022</span>
+            </div>
+            <div style="padding:20px 4px 0; display:flex; flex-direction:column; gap:10px; flex:1;">
+              <div style="font-size:11px; letter-spacing:.1em; color:#B08A4A;">数学教育 / 研修業</div>
+              <h3 style="margin:0; font-family:'Shippori Mincho',serif; font-size:17px; font-weight:600; line-height:1.6; letter-spacing:.04em; color:#1B1614;">「教えるのではなく、気づかせる」</h3>
+              <span style="font-size:11.5px; letter-spacing:.06em; color:rgba(27,22,20,.55);">株式会社数学アカデミー ／ 鈴木 伸介</span>
+            </div>
+          </a>
+          <a href="/articles/takehi" class="vop-card" data-industries="医療人材育成|組織開発業" data-search="武樋 史子 japan8メディカルキャリア支援協会株式会社 「あなたはこの組織に貢献している」 市役所職員、客室乗務員、医療法人の経営企画と、異なる畑を歩んできた武樋史子さん。2024年に個人事業をスタートし、2025年6月にjapan8メディカルキャリア支援協会株式会社を設立。クリニックで働く人の自信と誇りを育てる仕事に、これまでの経験のすべてを注いでいる。">
+            <div style="height:280px; overflow:hidden; position:relative;">
+              <img src="images/takehi-hero.jpg" alt="武樋 史子" loading="lazy" style="width:100%; height:100%; object-fit:cover; object-position:50% 15%;">
+              <span style="position:absolute; left:0; top:14px; font-family:'Cormorant Garamond',serif; font-size:11px; letter-spacing:.26em; color:#8E1D22; background:#FFF8F3; padding:5px 12px; pointer-events:none;">VOL.021</span>
+            </div>
+            <div style="padding:20px 4px 0; display:flex; flex-direction:column; gap:10px; flex:1;">
+              <div style="font-size:11px; letter-spacing:.1em; color:#B08A4A;">医療人材育成 / 組織開発業</div>
+              <h3 style="margin:0; font-family:'Shippori Mincho',serif; font-size:17px; font-weight:600; line-height:1.6; letter-spacing:.04em; color:#1B1614;">「あなたはこの組織に貢献している」</h3>
+              <span style="font-size:11.5px; letter-spacing:.06em; color:rgba(27,22,20,.55);">Japan8メディカルキャリア支援協会株式会社 ／ 武樋 史子</span>
+            </div>
+          </a>
+          <a href="/articles/kimura" class="vop-card" data-industries="業務改善|事務代行業" data-search="木村 杏那 株式会社andirich 「平凡じゃ、つまらない」 静岡から24歳で上京し、美容系求人サイトでの経験を土台に独立した木村杏那さん。スプレッドシートの一本の関数から身につけた仕組み化の力を武器に、仲間の力を借りながら株式会社andirichを育ててきた。いま向き合う苦しい時期と、5年で5,000万円という目標への道のりを伺った。">
+            <div style="height:280px; overflow:hidden; position:relative;">
+              <img src="images/kimura-hero.jpg" alt="木村 杏那" loading="lazy" style="width:100%; height:100%; object-fit:cover; object-position:50% 15%;">
+              <span style="position:absolute; left:0; top:14px; font-family:'Cormorant Garamond',serif; font-size:11px; letter-spacing:.26em; color:#8E1D22; background:#FFF8F3; padding:5px 12px; pointer-events:none;">VOL.020</span>
+            </div>
+            <div style="padding:20px 4px 0; display:flex; flex-direction:column; gap:10px; flex:1;">
+              <div style="font-size:11px; letter-spacing:.1em; color:#B08A4A;">業務改善 / 事務代行業</div>
+              <h3 style="margin:0; font-family:'Shippori Mincho',serif; font-size:17px; font-weight:600; line-height:1.6; letter-spacing:.04em; color:#1B1614;">「平凡じゃ、つまらない」</h3>
+              <span style="font-size:11.5px; letter-spacing:.06em; color:rgba(27,22,20,.55);">株式会社Andirich ／ 木村 杏那</span>
+            </div>
+          </a>
+          <a href="/articles/takahashi" class="vop-card" data-industries="パーソナルトレーニング業" data-search="高橋 昭仁 パーソナルトレーナー 「好きなことを一つ貫いて、仕事にしていけ」 東京・東銀座と赤坂、錦糸町を拠点に活動するパーソナルトレーナー、高橋昭仁さん。キックボクサーとしての青春を経て13年前にこの仕事を始め、実家からの知らせをきっかけに2年間だけ経営者としての道を歩んだ。回り道のように見えるその経験が、今の仕事にどうつながっているのか。">
+            <div style="height:280px; overflow:hidden; position:relative;">
+              <img src="images/takahashi-hero.jpg" alt="高橋 昭仁" loading="lazy" style="width:100%; height:100%; object-fit:cover; object-position:50% 15%;">
+              <span style="position:absolute; left:0; top:14px; font-family:'Cormorant Garamond',serif; font-size:11px; letter-spacing:.26em; color:#8E1D22; background:#FFF8F3; padding:5px 12px; pointer-events:none;">VOL.019</span>
+            </div>
+            <div style="padding:20px 4px 0; display:flex; flex-direction:column; gap:10px; flex:1;">
+              <div style="font-size:11px; letter-spacing:.1em; color:#B08A4A;">パーソナルトレーニング業</div>
+              <h3 style="margin:0; font-family:'Shippori Mincho',serif; font-size:17px; font-weight:600; line-height:1.6; letter-spacing:.04em; color:#1B1614;">「好きなことを一つ貫いて、仕事にしていけ」</h3>
+              <span style="font-size:11.5px; letter-spacing:.06em; color:rgba(27,22,20,.55);">パーソナルトレーナー ／ 高橋 昭仁</span>
+            </div>
+          </a>
+          <a href="/articles/furuya" class="vop-card" data-industries="不動産|通信取次業" data-search="古屋 周治 合同会社tf 「古屋くんでよかった、と言ってもらえる人でありたい」 静岡県沼津市出身、43歳の古屋周治さん。地元の鉄道会社、宅配便のドライバー、フルコミッションの不動産営業を経て、2023年に合同会社tfを設立。不動産・通信・害虫ブロックの3つの事業をたった1人で回す、広告費に頼らない「ご縁」の仕事術。">
+            <div style="height:280px; overflow:hidden; position:relative;">
+              <img src="images/furuya-hero.jpg" alt="古屋 周治" loading="lazy" style="width:100%; height:100%; object-fit:cover; object-position:50% 15%;">
+              <span style="position:absolute; left:0; top:14px; font-family:'Cormorant Garamond',serif; font-size:11px; letter-spacing:.26em; color:#8E1D22; background:#FFF8F3; padding:5px 12px; pointer-events:none;">VOL.018</span>
+            </div>
+            <div style="padding:20px 4px 0; display:flex; flex-direction:column; gap:10px; flex:1;">
+              <div style="font-size:11px; letter-spacing:.1em; color:#B08A4A;">不動産 / 通信取次業</div>
+              <h3 style="margin:0; font-family:'Shippori Mincho',serif; font-size:17px; font-weight:600; line-height:1.6; letter-spacing:.04em; color:#1B1614;">「古屋くんでよかった、と言ってもらえる人でありたい」</h3>
+              <span style="font-size:11.5px; letter-spacing:.06em; color:rgba(27,22,20,.55);">合同会社TF ／ 古屋 周治</span>
+            </div>
+          </a>
+          <a href="/articles/aonuma" class="vop-card" data-industries="アスリート支援業" data-search="青沼 広己 npo法人日本アスリート育成協会 「生涯アスリートでいたい」 アスリートとスポンサー企業が同じ場所で事業をつくるコミュニティ「athlifes」。運営する青沼広己さんは、ソサイチ日本代表を経験した現役選手でもある。チームのオーナー、監督、選手の3役を同時に持つ人が描く、アスリートの新しい生き方。">
+            <div style="height:280px; overflow:hidden; position:relative;">
+              <img src="images/aonuma-hero.jpg" alt="青沼 広己" loading="lazy" style="width:100%; height:100%; object-fit:cover; object-position:50% 15%;">
+              <span style="position:absolute; left:0; top:14px; font-family:'Cormorant Garamond',serif; font-size:11px; letter-spacing:.26em; color:#8E1D22; background:#FFF8F3; padding:5px 12px; pointer-events:none;">VOL.017</span>
+            </div>
+            <div style="padding:20px 4px 0; display:flex; flex-direction:column; gap:10px; flex:1;">
+              <div style="font-size:11px; letter-spacing:.1em; color:#B08A4A;">アスリート支援業</div>
+              <h3 style="margin:0; font-family:'Shippori Mincho',serif; font-size:17px; font-weight:600; line-height:1.6; letter-spacing:.04em; color:#1B1614;">「生涯アスリートでいたい」</h3>
+              <span style="font-size:11.5px; letter-spacing:.06em; color:rgba(27,22,20,.55);">NPO法人日本アスリート育成協会 ／ 青沼 広己</span>
+            </div>
+          </a>
+          <a href="/articles/takei" class="vop-card" data-industries="小児歯科医院" data-search="武井 新吾 ほしいろ歯科こども歯科クリニック 「天然の歯に勝る治療は、ありません」 高校を卒業して大工の道へ進み、30代で歯学部に入り直し、51歳で自分の医院を開いた武井新吾さん。兵庫県尼崎市で子どもに特化した歯科クリニックを営む、回り道のようにも見える道のりと、開院から1年を経て見据えているもの。">
+            <div style="height:280px; overflow:hidden; position:relative;">
+              <img src="images/takei-hero.jpg" alt="武井 新吾" loading="lazy" style="width:100%; height:100%; object-fit:cover; object-position:50% 15%;">
+              <span style="position:absolute; left:0; top:14px; font-family:'Cormorant Garamond',serif; font-size:11px; letter-spacing:.26em; color:#8E1D22; background:#FFF8F3; padding:5px 12px; pointer-events:none;">VOL.016</span>
+            </div>
+            <div style="padding:20px 4px 0; display:flex; flex-direction:column; gap:10px; flex:1;">
+              <div style="font-size:11px; letter-spacing:.1em; color:#B08A4A;">小児歯科医院</div>
+              <h3 style="margin:0; font-family:'Shippori Mincho',serif; font-size:17px; font-weight:600; line-height:1.6; letter-spacing:.04em; color:#1B1614;">「天然の歯に勝る治療は、ありません」</h3>
+              <span style="font-size:11.5px; letter-spacing:.06em; color:rgba(27,22,20,.55);">ほしいろ歯科こども歯科クリニック ／ 武井 新吾</span>
+            </div>
+          </a>
+          <a href="/articles/gunji" class="vop-card" data-industries="マーケティング支援業" data-search="軍司 敦哉 株式会社conduct 「良さを引き出す」 税理士法人に勤めながら副業でline公式アカウントの構築・運用を始め、5年の歳月を経て2025年に法人化した軍司敦哉さん。中学から続けてきた吹奏楽での指揮者経験が、社名の由来にも重なる。仙台から全国へと広げていく事業の歩みを聞いた。">
+            <div style="height:280px; overflow:hidden; position:relative;">
+              <img src="images/gunji-hero.jpg" alt="軍司 敦哉" loading="lazy" style="width:100%; height:100%; object-fit:cover; object-position:50% 15%;">
+              <span style="position:absolute; left:0; top:14px; font-family:'Cormorant Garamond',serif; font-size:11px; letter-spacing:.26em; color:#8E1D22; background:#FFF8F3; padding:5px 12px; pointer-events:none;">VOL.015</span>
+            </div>
+            <div style="padding:20px 4px 0; display:flex; flex-direction:column; gap:10px; flex:1;">
+              <div style="font-size:11px; letter-spacing:.1em; color:#B08A4A;">マーケティング支援業</div>
+              <h3 style="margin:0; font-family:'Shippori Mincho',serif; font-size:17px; font-weight:600; line-height:1.6; letter-spacing:.04em; color:#1B1614;">「良さを引き出す」</h3>
+              <span style="font-size:11.5px; letter-spacing:.06em; color:rgba(27,22,20,.55);">株式会社Conduct ／ 軍司 敦哉</span>
+            </div>
+          </a>
+          <a href="/articles/watanabe" class="vop-card" data-industries="出張買取業" data-search="渡邊 真大 株式会社プライスマイル 「捨てるに忍びない思い出の品を、預かる仕事だから」 新卒で入ったエンジニアの仕事が合わず、あやしい話に乗りかけ、妻に引き戻された。買取の世界に飛び込んで5年、今は1都3県で出張買取を手がける渡邊真大さん。50万円を溶かした話から、aiによる業務改革まで聞いた。">
+            <div style="height:280px; overflow:hidden; position:relative;">
+              <img src="images/watanabe-hero.jpg" alt="渡邊 真大" loading="lazy" style="width:100%; height:100%; object-fit:cover; object-position:50% 15%;">
+              <span style="position:absolute; left:0; top:14px; font-family:'Cormorant Garamond',serif; font-size:11px; letter-spacing:.26em; color:#8E1D22; background:#FFF8F3; padding:5px 12px; pointer-events:none;">VOL.014</span>
+            </div>
+            <div style="padding:20px 4px 0; display:flex; flex-direction:column; gap:10px; flex:1;">
+              <div style="font-size:11px; letter-spacing:.1em; color:#B08A4A;">出張買取業</div>
+              <h3 style="margin:0; font-family:'Shippori Mincho',serif; font-size:17px; font-weight:600; line-height:1.6; letter-spacing:.04em; color:#1B1614;">「捨てるに忍びない思い出の品を、預かる仕事だから」</h3>
+              <span style="font-size:11.5px; letter-spacing:.06em; color:rgba(27,22,20,.55);">株式会社プライスマイル ／ 渡邊 真大</span>
+            </div>
+          </a>
+          <a href="/articles/hatakeyama" class="vop-card" data-industries="和菓子製造業" data-search="畠山 憲之 有限会社いさみや 「町のお菓子屋というインフラは、この街にちゃんと残したい」 宮城県気仙沼市本吉町、1947年創業の「御菓子司 いさみや」。一度は家業のレールを外れ、10年の修業を経て戻った3代目・畠山憲之さんが、人口が減り続ける町で菓子屋を残すために考えていること。">
+            <div style="height:280px; overflow:hidden; position:relative;">
+              <img src="images/hatakeyama-hero.jpg" alt="畠山 憲之" loading="lazy" style="width:100%; height:100%; object-fit:cover; object-position:50% 15%;">
+              <span style="position:absolute; left:0; top:14px; font-family:'Cormorant Garamond',serif; font-size:11px; letter-spacing:.26em; color:#8E1D22; background:#FFF8F3; padding:5px 12px; pointer-events:none;">VOL.013</span>
+            </div>
+            <div style="padding:20px 4px 0; display:flex; flex-direction:column; gap:10px; flex:1;">
+              <div style="font-size:11px; letter-spacing:.1em; color:#B08A4A;">和菓子製造業</div>
+              <h3 style="margin:0; font-family:'Shippori Mincho',serif; font-size:17px; font-weight:600; line-height:1.6; letter-spacing:.04em; color:#1B1614;">「町のお菓子屋というインフラは、この街にちゃんと残したい」</h3>
+              <span style="font-size:11.5px; letter-spacing:.06em; color:rgba(27,22,20,.55);">有限会社いさみや ／ 畠山 憲之</span>
+            </div>
+          </a>
+          <a href="/articles/matsuoka" class="vop-card" data-industries="スポーツウェア製造業" data-search="松岡 翔太 エボレジャパン株式会社 「失敗しないと進化はできない」 21歳のとき、兄から借りた10万円を元手にtシャツづくりを始めた松岡翔太さん。現役のビーチサッカー選手として競技を続けながら、スポーツウェア、人工ビーチ施設、ジム、カフェへと15年で事業を広げてきた歩みを聞いた。">
+            <div style="height:280px; overflow:hidden; position:relative;">
+              <img src="images/matsuoka-hero.jpg" alt="松岡 翔太" loading="lazy" style="width:100%; height:100%; object-fit:cover; object-position:50% 15%;">
+              <span style="position:absolute; left:0; top:14px; font-family:'Cormorant Garamond',serif; font-size:11px; letter-spacing:.26em; color:#8E1D22; background:#FFF8F3; padding:5px 12px; pointer-events:none;">VOL.012</span>
+            </div>
+            <div style="padding:20px 4px 0; display:flex; flex-direction:column; gap:10px; flex:1;">
+              <div style="font-size:11px; letter-spacing:.1em; color:#B08A4A;">スポーツウェア製造業</div>
+              <h3 style="margin:0; font-family:'Shippori Mincho',serif; font-size:17px; font-weight:600; line-height:1.6; letter-spacing:.04em; color:#1B1614;">「失敗しないと進化はできない」</h3>
+              <span style="font-size:11.5px; letter-spacing:.06em; color:rgba(27,22,20,.55);">エボレジャパン株式会社 ／ 松岡 翔太</span>
+            </div>
+          </a>
+          <a href="/articles/satomi" class="vop-card" data-industries="段ボール製造業" data-search="里見 允二 サトミ紙工株式会社 「27年後の創業100年に向けて、僕は『satomi city』をつくろうと思っています」 岡山県津山市、1952年創業のサトミ紙工株式会社。5代目を担う里見允二さんが、福祉の仕事から家業へ戻り、創業100年に向けて〈satomi city〉という街づくり構想を描くまで。">
+            <div style="height:280px; overflow:hidden; position:relative;">
+              <img src="images/satomi-hero.jpg" alt="里見 允二" loading="lazy" style="width:100%; height:100%; object-fit:cover; object-position:50% 15%;">
+              <span style="position:absolute; left:0; top:14px; font-family:'Cormorant Garamond',serif; font-size:11px; letter-spacing:.26em; color:#8E1D22; background:#FFF8F3; padding:5px 12px; pointer-events:none;">VOL.011</span>
+            </div>
+            <div style="padding:20px 4px 0; display:flex; flex-direction:column; gap:10px; flex:1;">
+              <div style="font-size:11px; letter-spacing:.1em; color:#B08A4A;">段ボール製造業</div>
+              <h3 style="margin:0; font-family:'Shippori Mincho',serif; font-size:17px; font-weight:600; line-height:1.6; letter-spacing:.04em; color:#1B1614;">「27年後の創業100年に向けて、僕は『SATOMI CITY』をつくろうと思っています」</h3>
+              <span style="font-size:11.5px; letter-spacing:.06em; color:rgba(27,22,20,.55);">サトミ紙工株式会社 ／ 里見 允二</span>
+            </div>
+          </a>
+          <a href="/articles/masumoto" class="vop-card" data-industries="害虫対策|塗装業" data-search="増本 重孝 株式会社ワイエス 「一塁まで全力で走れと教えている自分は、仕事で全力で走れているか」 静岡県島田市で塗装・リフォーム業を営みながら、殺さず寄せ付けない液体〈害虫ブロック〉を全国230社に広げた増本重孝さん。少年野球のコーチも17年目。19歳の決意から積み上げた30年について聞いた。">
+            <div style="height:280px; overflow:hidden; position:relative;">
+              <img src="images/masumoto-hero.jpg" alt="増本 重孝" loading="lazy" style="width:100%; height:100%; object-fit:cover; object-position:50% 15%;">
+              <span style="position:absolute; left:0; top:14px; font-family:'Cormorant Garamond',serif; font-size:11px; letter-spacing:.26em; color:#8E1D22; background:#FFF8F3; padding:5px 12px; pointer-events:none;">VOL.010</span>
+            </div>
+            <div style="padding:20px 4px 0; display:flex; flex-direction:column; gap:10px; flex:1;">
+              <div style="font-size:11px; letter-spacing:.1em; color:#B08A4A;">害虫対策 / 塗装業</div>
+              <h3 style="margin:0; font-family:'Shippori Mincho',serif; font-size:17px; font-weight:600; line-height:1.6; letter-spacing:.04em; color:#1B1614;">「一塁まで全力で走れと教えている自分は、仕事で全力で走れているか」</h3>
+              <span style="font-size:11.5px; letter-spacing:.06em; color:rgba(27,22,20,.55);">株式会社ワイエス ／ 増本 重孝</span>
+            </div>
+          </a>
+          <a href="/articles/endo" class="vop-card" data-industries="キャリア支援" data-search="遠藤 靖浩 glow shift 「自分の名前で勝負したい」 20代を中心とした転職支援、半年間伴走するキャリアコーチング、そして企業や学校での講演。独立2年目、人材業界16年の来歴と、中学生の頃に語った夢のゆくえ。">
+            <div style="height:280px; overflow:hidden; position:relative;">
+              <img src="images/endo-hero.jpg" alt="遠藤 靖浩" loading="lazy" style="width:100%; height:100%; object-fit:cover; object-position:50% 15%;">
+              <span style="position:absolute; left:0; top:14px; font-family:'Cormorant Garamond',serif; font-size:11px; letter-spacing:.26em; color:#8E1D22; background:#FFF8F3; padding:5px 12px; pointer-events:none;">VOL.009</span>
+            </div>
+            <div style="padding:20px 4px 0; display:flex; flex-direction:column; gap:10px; flex:1;">
+              <div style="font-size:11px; letter-spacing:.1em; color:#B08A4A;">キャリア支援</div>
+              <h3 style="margin:0; font-family:'Shippori Mincho',serif; font-size:17px; font-weight:600; line-height:1.6; letter-spacing:.04em; color:#1B1614;">「自分の名前で勝負したい」</h3>
+              <span style="font-size:11.5px; letter-spacing:.06em; color:rgba(27,22,20,.55);">GLOW SHIFT ／ 遠藤 靖浩</span>
+            </div>
+          </a>
+          <a href="/articles/imanishi" class="vop-card" data-industries="印刷|地域アプリ" data-search="今西 俊明 株式会社アイエルシー 「現状維持は衰退」 着任初日に最大の取引先を失うところから始まった10年。40年以上続く商業印刷の会社に、自ら立ち上げた飲食店向けアプリという2本目の柱を据えるまで。">
+            <div style="height:280px; overflow:hidden; position:relative;">
+              <img src="images/imanishi-hero.jpg" alt="今西 俊明" loading="lazy" style="width:100%; height:100%; object-fit:cover; object-position:50% 15%;">
+              <span style="position:absolute; left:0; top:14px; font-family:'Cormorant Garamond',serif; font-size:11px; letter-spacing:.26em; color:#8E1D22; background:#FFF8F3; padding:5px 12px; pointer-events:none;">VOL.008</span>
+            </div>
+            <div style="padding:20px 4px 0; display:flex; flex-direction:column; gap:10px; flex:1;">
+              <div style="font-size:11px; letter-spacing:.1em; color:#B08A4A;">印刷 / 地域アプリ</div>
+              <h3 style="margin:0; font-family:'Shippori Mincho',serif; font-size:17px; font-weight:600; line-height:1.6; letter-spacing:.04em; color:#1B1614;">「現状維持は衰退」</h3>
+              <span style="font-size:11.5px; letter-spacing:.06em; color:rgba(27,22,20,.55);">株式会社アイエルシー ／ 今西 俊明</span>
+            </div>
+          </a>
+          <a href="/articles/seino" class="vop-card" data-industries="スポーツアパレル" data-search="清野 潤 株式会社zott 「大学1年でつくったチームを、失いたくなかった」 ブラジル生まれのフットボールブランド「ダウポンチ」を日本で展開する株式会社zott。その原点は、大学1年でつくった一つのフットサルチームだった。">
+            <div style="height:280px; overflow:hidden; position:relative;">
+              <img src="images/seino-hero.jpg" alt="清野 潤" loading="lazy" style="width:100%; height:100%; object-fit:cover; object-position:50% 15%;">
+              <span style="position:absolute; left:0; top:14px; font-family:'Cormorant Garamond',serif; font-size:11px; letter-spacing:.26em; color:#8E1D22; background:#FFF8F3; padding:5px 12px; pointer-events:none;">VOL.007</span>
+            </div>
+            <div style="padding:20px 4px 0; display:flex; flex-direction:column; gap:10px; flex:1;">
+              <div style="font-size:11px; letter-spacing:.1em; color:#B08A4A;">スポーツアパレル</div>
+              <h3 style="margin:0; font-family:'Shippori Mincho',serif; font-size:17px; font-weight:600; line-height:1.6; letter-spacing:.04em; color:#1B1614;">「大学1年でつくったチームを、失いたくなかった」</h3>
+              <span style="font-size:11.5px; letter-spacing:.06em; color:rgba(27,22,20,.55);">株式会社ZOTT ／ 清野 潤</span>
+            </div>
+          </a>
+          <a href="/articles/hiji" class="vop-card" data-industries="墓苑コンサルティング" data-search="臂 幸子 株式会社宙の会 70代が現役で働く会社をつくる 都心のお寺の境内に、樹木葬の区画を用意する。40代まで専業主婦だった代表が、何百年も続く寺院の経営を支える立場になるまでの11年。">
+            <div style="height:280px; overflow:hidden; position:relative;">
+              <img src="images/hiji-hero.jpg" alt="臂 幸子" loading="lazy" style="width:100%; height:100%; object-fit:cover; object-position:50% 15%;">
+              <span style="position:absolute; left:0; top:14px; font-family:'Cormorant Garamond',serif; font-size:11px; letter-spacing:.26em; color:#8E1D22; background:#FFF8F3; padding:5px 12px; pointer-events:none;">VOL.006</span>
+            </div>
+            <div style="padding:20px 4px 0; display:flex; flex-direction:column; gap:10px; flex:1;">
+              <div style="font-size:11px; letter-spacing:.1em; color:#B08A4A;">墓苑コンサルティング</div>
+              <h3 style="margin:0; font-family:'Shippori Mincho',serif; font-size:17px; font-weight:600; line-height:1.6; letter-spacing:.04em; color:#1B1614;">70代が現役で働く会社をつくる</h3>
+              <span style="font-size:11.5px; letter-spacing:.06em; color:rgba(27,22,20,.55);">株式会社宙の会 ／ 臂 幸子</span>
+            </div>
+          </a>
+          <a href="/articles/saito" class="vop-card" data-industries="通信機器" data-search="斎藤 貴史 株式会社マス・コミュニケーションシステム 「みんなと同じというのが、好きじゃなかったんです」 5歳でラケットを握り、18歳でプロへ。27歳での引退後はリクルートを経て、創業39期目を迎える業務用無線機の会社の代表に就任。">
+            <div style="height:280px; overflow:hidden; position:relative;">
+              <img src="images/saito-hero.jpg" alt="斎藤 貴史" loading="lazy" style="width:100%; height:100%; object-fit:cover; object-position:50% 15%;">
+              <span style="position:absolute; left:0; top:14px; font-family:'Cormorant Garamond',serif; font-size:11px; letter-spacing:.26em; color:#8E1D22; background:#FFF8F3; padding:5px 12px; pointer-events:none;">VOL.005</span>
+            </div>
+            <div style="padding:20px 4px 0; display:flex; flex-direction:column; gap:10px; flex:1;">
+              <div style="font-size:11px; letter-spacing:.1em; color:#B08A4A;">通信機器</div>
+              <h3 style="margin:0; font-family:'Shippori Mincho',serif; font-size:17px; font-weight:600; line-height:1.6; letter-spacing:.04em; color:#1B1614;">「みんなと同じというのが、好きじゃなかったんです」</h3>
+              <span style="font-size:11.5px; letter-spacing:.06em; color:rgba(27,22,20,.55);">株式会社マス・コミュニケーションシステム ／ 斎藤 貴史</span>
+            </div>
+          </a>
+          <a href="/articles/hara" class="vop-card" data-industries="スポーツ施設施工" data-search="原 誠 セントラル産業株式会社 プレイヤー目線と、徹底した品質へのこだわり 時代を生き抜く、大胆な決断と早期のweb戦略。テニスコートをはじめとするスポーツ施設の施工・改修で確固たる実績を持つセントラル産業の30年。">
+            <div style="height:280px; overflow:hidden; position:relative;">
+              <img src="images/hara-hero.jpg" alt="原 誠" loading="lazy" style="width:100%; height:100%; object-fit:cover; object-position:50% 15%;">
+              <span style="position:absolute; left:0; top:14px; font-family:'Cormorant Garamond',serif; font-size:11px; letter-spacing:.26em; color:#8E1D22; background:#FFF8F3; padding:5px 12px; pointer-events:none;">VOL.004</span>
+            </div>
+            <div style="padding:20px 4px 0; display:flex; flex-direction:column; gap:10px; flex:1;">
+              <div style="font-size:11px; letter-spacing:.1em; color:#B08A4A;">スポーツ施設施工</div>
+              <h3 style="margin:0; font-family:'Shippori Mincho',serif; font-size:17px; font-weight:600; line-height:1.6; letter-spacing:.04em; color:#1B1614;">プレイヤー目線と、徹底した品質へのこだわり</h3>
+              <span style="font-size:11.5px; letter-spacing:.06em; color:rgba(27,22,20,.55);">セントラル産業株式会社 ／ 原 誠</span>
+            </div>
+          </a>
+          <a href="/articles/irokawa" class="vop-card" data-industries="国際人材育成" data-search="色川 冬馬 株式会社asian breeze 24歳で代表監督、そしてmlbスカウトへ 24歳でイラン代表監督に就任し、パキスタン・香港でも指揮を執った異端のキャリア。次なる目標は日本球界のgm。">
+            <div style="height:280px; overflow:hidden; position:relative;">
+              <img src="images/irokawa-hero.jpg" alt="色川 冬馬" loading="lazy" style="width:100%; height:100%; object-fit:cover; object-position:50% 15%;">
+              <span style="position:absolute; left:0; top:14px; font-family:'Cormorant Garamond',serif; font-size:11px; letter-spacing:.26em; color:#8E1D22; background:#FFF8F3; padding:5px 12px; pointer-events:none;">VOL.003</span>
+            </div>
+            <div style="padding:20px 4px 0; display:flex; flex-direction:column; gap:10px; flex:1;">
+              <div style="font-size:11px; letter-spacing:.1em; color:#B08A4A;">国際人材育成</div>
+              <h3 style="margin:0; font-family:'Shippori Mincho',serif; font-size:17px; font-weight:600; line-height:1.6; letter-spacing:.04em; color:#1B1614;">24歳で代表監督、そしてMLBスカウトへ</h3>
+              <span style="font-size:11.5px; letter-spacing:.06em; color:rgba(27,22,20,.55);">株式会社Asian Breeze ／ 色川 冬馬</span>
+            </div>
+          </a>
+          <a href="/articles/mizobuchi" class="vop-card" data-industries="経営コンサルティング" data-search="溝渕 善彦 経営コンサルタント 「できるかできないかではなく、やるかやらないか」 金融機関勤務を経て独立した経営コンサルタントが、aiとリユース品、そして62歳でのフィジーク挑戦を通じて辿り着いた「自分らしさ」という働く目的。">
+            <div style="height:280px; overflow:hidden; position:relative;">
+              <img src="images/mizobuchi-hero.jpg" alt="溝渕 善彦" loading="lazy" style="width:100%; height:100%; object-fit:cover; object-position:50% 15%;">
+              <span style="position:absolute; left:0; top:14px; font-family:'Cormorant Garamond',serif; font-size:11px; letter-spacing:.26em; color:#8E1D22; background:#FFF8F3; padding:5px 12px; pointer-events:none;">VOL.002</span>
+            </div>
+            <div style="padding:20px 4px 0; display:flex; flex-direction:column; gap:10px; flex:1;">
+              <div style="font-size:11px; letter-spacing:.1em; color:#B08A4A;">経営コンサルティング</div>
+              <h3 style="margin:0; font-family:'Shippori Mincho',serif; font-size:17px; font-weight:600; line-height:1.6; letter-spacing:.04em; color:#1B1614;">「できるかできないかではなく、やるかやらないか」</h3>
+              <span style="font-size:11.5px; letter-spacing:.06em; color:rgba(27,22,20,.55);">経営コンサルタント ／ 溝渕 善彦</span>
+            </div>
+          </a>
+          <a href="/articles/yokoyama" class="vop-card" data-industries="建設|インフラ" data-search="横山 貴明 有限会社一貴工業 「勝つか、学ぶか」 元東北楽天ゴールデンイーグルス投手が、引退後に飛び込んだ建設業界。誰も持っていない国家資格で職人たちの信頼を勝ち取り、福島のインフラを支える二代目社長へ。">
+            <div style="height:280px; overflow:hidden; position:relative;">
+              <img src="images/yokoyama-hero.jpg" alt="横山 貴明" loading="lazy" style="width:100%; height:100%; object-fit:cover; object-position:50% 15%;">
+              <span style="position:absolute; left:0; top:14px; font-family:'Cormorant Garamond',serif; font-size:11px; letter-spacing:.26em; color:#8E1D22; background:#FFF8F3; padding:5px 12px; pointer-events:none;">VOL.001</span>
+            </div>
+            <div style="padding:20px 4px 0; display:flex; flex-direction:column; gap:10px; flex:1;">
+              <div style="font-size:11px; letter-spacing:.1em; color:#B08A4A;">建設 / インフラ</div>
+              <h3 style="margin:0; font-family:'Shippori Mincho',serif; font-size:17px; font-weight:600; line-height:1.6; letter-spacing:.04em; color:#1B1614;">「勝つか、学ぶか」</h3>
+              <span style="font-size:11.5px; letter-spacing:.06em; color:rgba(27,22,20,.55);">有限会社一貴工業 ／ 横山 貴明</span>
+            </div>
+          </a></div>
+    <p id="vop-empty">該当する記事が見つかりませんでした。条件を変えてお試しください。</p>
+
+    <footer style="padding:34px 56px; background:#8E1D22; display:flex; justify-content:space-between; align-items:center; font-size:11.5px; letter-spacing:.16em; color:rgba(255,248,243,.72);">
+      <a href="/" style="font-family:'Cormorant Garamond',serif; letter-spacing:.3em; font-size:13px; color:#FFF8F3;">VOICE OF PRESIDENT</a>
+      <span style="display:flex; gap:26px; white-space:nowrap;"><span>プライバシーポリシー</span><span>© 2026</span></span>
+    </footer>
+
+  </div>
+  </div>
+</section>
+
+<script>
+(() => {
+  function setupScale() {
+    const el = document.getElementById('vop-scaler');
+    const inner = document.getElementById('vop-page');
+    if (!el || !inner) return;
+    const fit = () => {
+      const s = Math.min(1, document.documentElement.clientWidth / 1240);
+      el.style.transform = s < 1 ? 'scale(' + s + ')' : 'none';
+      const h = inner.scrollHeight;
+      el.style.marginBottom = s < 1 ? -(h * (1 - s)) + 'px' : '';
+    };
+    window.addEventListener('resize', fit, { passive: true });
+    fit();
+    if (window.ResizeObserver) new ResizeObserver(fit).observe(inner);
+    setTimeout(fit, 400);
+    setTimeout(fit, 1600);
+  }
+
+  function setupFilters() {
+    const grid = document.getElementById('vop-grid');
+    const cards = Array.from(grid.querySelectorAll('.vop-card'));
+    const chips = Array.from(document.querySelectorAll('.vop-chip'));
+    const searchInput = document.getElementById('vop-search');
+    const countEl = document.getElementById('vop-count');
+    const emptyEl = document.getElementById('vop-empty');
+    const clearBtn = document.getElementById('vop-clear');
+    const activeTags = new Set();
+
+    const params = new URLSearchParams(location.search);
+    const initialQ = params.get('q') || '';
+    if (initialQ) searchInput.value = initialQ;
+
+    function apply() {
+      const q = searchInput.value.trim().toLowerCase();
+      let shown = 0;
+      cards.forEach(card => {
+        const industries = card.dataset.industries.split('|');
+        const matchesTags = activeTags.size === 0 || industries.some(ind => activeTags.has(ind));
+        const matchesSearch = !q || card.dataset.search.includes(q);
+        const visible = matchesTags && matchesSearch;
+        card.style.display = visible ? '' : 'none';
+        if (visible) shown++;
+      });
+      countEl.textContent = shown;
+      emptyEl.style.display = shown === 0 ? 'block' : 'none';
+      grid.style.display = shown === 0 ? 'none' : 'grid';
+      clearBtn.style.display = (activeTags.size > 0 || q) ? 'inline-block' : 'none';
+    }
+
+    chips.forEach(chip => {
+      chip.addEventListener('click', () => {
+        const tag = chip.dataset.tag;
+        if (activeTags.has(tag)) { activeTags.delete(tag); chip.classList.remove('active'); }
+        else { activeTags.add(tag); chip.classList.add('active'); }
+        apply();
+      });
+    });
+
+    searchInput.addEventListener('input', apply);
+    clearBtn.addEventListener('click', () => {
+      activeTags.clear();
+      chips.forEach(c => c.classList.remove('active'));
+      searchInput.value = '';
+      apply();
+    });
+
+    apply();
+  }
+
+  document.addEventListener('DOMContentLoaded', () => {
+    setupScale();
+    setupFilters();
+  });
+})();
+</script>
 <script defer src="/_vercel/insights/script.js"></script>
 </body>
 </html>
