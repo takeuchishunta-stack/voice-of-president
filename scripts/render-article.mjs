@@ -2,6 +2,13 @@
 // article pages are pixel-identical to the previous client-rendered ones.
 import { esc } from './lib.mjs';
 
+// Image paths are stored root-relative ("images/foo.jpg"). Article pages are
+// served one level deep (/articles/<id>), so they need a leading slash to
+// resolve correctly -- unlike index.html and archive.html, which sit at root.
+function abs(p) {
+  return /^(\/|https?:)/.test(p) ? p : '/' + p;
+}
+
 function renderBlock(b) {
   switch (b.type) {
     case 'lead':
@@ -19,7 +26,7 @@ function renderBlock(b) {
       return null; // rendered separately
     case 'img':
       return `<figure style="margin:16px 0 44px;">
-          <div style="overflow:hidden;"><img src="${esc(b.src)}" alt="${esc(b.caption || '')}" style="width:100%; display:block; object-fit:cover;"></div>
+          <div style="overflow:hidden;"><img src="${esc(abs(b.src))}" alt="${esc(b.caption || '')}" style="width:100%; display:block; object-fit:cover;"></div>
           ${b.caption ? `<figcaption style="margin-top:12px; font-size:12px; letter-spacing:.06em; line-height:1.8; color:rgba(27,22,20,.5);">${esc(b.caption)}</figcaption>` : ''}
         </figure>`;
     case 'p':
@@ -31,7 +38,7 @@ function renderBlock(b) {
 function renderProfile(a, prof) {
   return `<div style="margin:44px 0 0; padding:38px 40px; border:1px solid rgba(27,22,20,.16); display:flex; gap:30px; align-items:flex-start;">
       <div style="flex:none; width:118px; height:118px; overflow:hidden;">
-        <img src="${esc(a.face || a.photo)}" alt="" style="width:100%; height:100%; object-fit:cover;">
+        <img src="${esc(abs(a.face || a.photo))}" alt="" style="width:100%; height:100%; object-fit:cover;">
       </div>
       <div style="min-width:0; display:flex; flex-direction:column; gap:11px;">
         <span style="font-family:'Cormorant Garamond',serif; font-size:11.5px; letter-spacing:.3em; color:#B08A4A;">PROFILE</span>
@@ -55,7 +62,7 @@ export function renderArticleBody(a) {
         </div>
         <div style="position:relative; overflow:hidden; border-left:38px solid #8E1D22; min-width:0;">
           <div style="position:absolute; inset:-4%; animation:vopKb 26s ease-in-out infinite alternate;">
-            <img src="${esc(a.photo)}" alt="" style="width:100%; height:100%; object-fit:cover; object-position:50% 12%;">
+            <img src="${esc(abs(a.photo))}" alt="" style="width:100%; height:100%; object-fit:cover; object-position:50% 12%;">
           </div>
         </div>
       </div>
@@ -76,7 +83,7 @@ export function renderArticleBody(a) {
           <span style="font-size:12.5px; letter-spacing:.12em; color:rgba(27,22,20,.55);">${esc(a.next.company)} ／ ${esc(a.next.name)}</span>
         </a>
         <div style="min-width:0; height:260px; overflow:hidden; border-left:1px solid rgba(27,22,20,.12);">
-          <img src="${esc(a.next.photo)}" alt="" style="width:100%; height:100%; object-fit:cover; object-position:50% 15%;">
+          <img src="${esc(abs(a.next.photo))}" alt="" style="width:100%; height:100%; object-fit:cover; object-position:50% 15%;">
         </div>
       </div>
     `;
