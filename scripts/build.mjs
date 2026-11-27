@@ -9,7 +9,7 @@ import path from 'node:path';
 import { ROOT, openDb } from './lib.mjs';
 import { renderArticlePage } from './render-article.mjs';
 import { renderArchivePage } from './render-archive.mjs';
-import { sitemapXml, robotsTxt, privacyPage } from './seo.mjs';
+import { sitemapXml, robotsTxt, privacyPage, checkNetwork } from './seo.mjs';
 
 const db = openDb();
 
@@ -95,6 +95,7 @@ fs.writeFileSync(path.join(ROOT, 'articles-data.js'), legacyLines.join('\n') + '
 console.log('Refreshed articles-data.js');
 
 // --- sitemap.xml / robots.txt / privacy.html（Furutori 追加：検索向け） --------
+checkNetwork(articles);
 fs.writeFileSync(path.join(ROOT, 'sitemap.xml'), sitemapXml(articles), 'utf8');
 fs.writeFileSync(path.join(ROOT, 'robots.txt'), robotsTxt(), 'utf8');
 fs.writeFileSync(path.join(ROOT, 'privacy.html'), privacyPage(), 'utf8');

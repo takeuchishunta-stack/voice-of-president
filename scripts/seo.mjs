@@ -53,10 +53,11 @@ export function articleHead(a) {
   const ld = [{
     '@context': 'https://schema.org',
     '@type': 'Article',
-    headline: a.title,
+    headline: title,
     description: desc,
     image: [img],
     datePublished: isoDate(a.date),
+    dateModified: isoDate(a.date),
     author: { '@type': 'Organization', name: CFG.publisher, url: SITE + '/' },
     publisher: { '@type': 'Organization', name: CFG.siteName, url: SITE + '/' },
     mainEntityOfPage: url,
@@ -96,6 +97,12 @@ export function relatedOf(a, all, n = 3) {
     .sort((x, y) => y.s - x.s).map(x => x.b)].slice(0, n);
 }
 
+export function checkNetwork(all) {
+  const names = new Set(all.map(a => normName(a.name)));
+  const miss = NET.articles.filter(s => !names.has(normName(s.name)));
+  if (miss.length) console.warn('network.json: VoP に無い人の行 →', miss.map(s => s.name).join('、'));
+}
+
 export function sistersOf(a) {
   const me = normName(a.name);
   return NET.articles.filter(s => normName(s.name) === me);
@@ -133,14 +140,14 @@ export function articleAfterBody(a, all) {
             <span style="display:block; height:170px; overflow:hidden;"><img src="/${esc(String(b.photo).replace(/^\//, ''))}" alt="" loading="lazy" style="width:100%; height:100%; object-fit:cover; object-position:50% 15%;"></span>
             <span style="padding:14px 14px 16px; display:flex; flex-direction:column; gap:8px;">
               <span style="font-size:10.5px; letter-spacing:.1em; color:#B08A4A;">VOL.${esc(b.vol)}　${esc(b.industries.join(' / '))}</span>
-              <span style="font-family:'Shippori Mincho',serif; font-size:15px; font-weight:600; line-height:1.65;">${esc(b.title)}</span>
+              <span style="font-family:'Shippori Mincho',serif; font-size:15px; font-weight:600; line-height:1.65; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; min-height:3.3em;">${esc(b.title)}</span>
               <span style="font-size:11px; color:rgba(27,22,20,.55);">${esc(b.company)} ／ ${esc(b.name)}</span>
             </span>
           </a>`).join('')}
           </div>
         </div>`;
 
-  const nets = NET.sites.map(s => `<a href="${esc(s.url)}" data-dest="${esc(s.media_id)}" style="display:flex; flex-direction:column; gap:6px; padding:18px 20px; border:1px solid rgba(27,22,20,.12); color:#1B1614; min-width:0;"><span style="font-family:'Cormorant Garamond',serif; font-size:15px; letter-spacing:.16em; color:#8E1D22;">${esc(s.name)}</span><span style="font-size:11.5px; line-height:1.7; color:rgba(27,22,20,.6);">${esc(s.desc)}</span></a>`).join('');
+  const nets = NET.sites.map(s => `<a href="${esc(s.url)}" data-dest="${esc(s.media_id)}" style="display:flex; flex-direction:column; gap:6px; padding:18px 20px; border:1px solid rgba(27,22,20,.12); color:#1B1614; min-width:0;"><span style="font-family:'Cormorant Garamond',serif; font-size:15px; letter-spacing:.16em; color:#8E1D22;">${esc(s.name)}</span><span style="font-size:11.5px; line-height:1.7; color:rgba(27,22,20,.6); min-height:3.4em;">${esc(s.desc)}</span><span style="font-size:11px; letter-spacing:.14em; color:#8E1D22;">サイトを見る →</span></a>`).join('');
   const netHtml = `<div class="vop-net" style="margin-top:64px;">
           <span style="${H}">SISTER MEDIA</span>
           <div style="margin-top:16px; display:grid; grid-template-columns:repeat(3, 1fr); gap:16px;">${nets}</div>
@@ -211,6 +218,7 @@ export function privacyPage() {
 <table>
 <tr><th>サービス・送信先</th><th>送る情報</th><th>目的</th></tr>
 <tr><td>Google アナリティクス（Google LLC）</td><td>閲覧したページのURL、参照元、端末・ブラウザの種類、おおまかな地域、ページ内の操作（関連記事・シェアボタンのクリック、記事を最後まで読んだか）、Cookie などの識別子</td><td>アクセスの集計・記事の改善。広告のための機能（Google シグナル・広告のカスタマイズ）は使っていません</td></tr>
+<tr><td>Google Fonts（Google LLC）</td><td>IPアドレス、ブラウザの種類（文字の書体を読み込む時に送られます）</td><td>ページの文字を表示するため</td></tr>
 <tr><td>Vercel Web Analytics（Vercel Inc.）</td><td>閲覧したページのURL、参照元、端末・ブラウザの種類、おおまかな地域</td><td>アクセスの集計</td></tr>
 </table>
 <h2>止める方法</h2>

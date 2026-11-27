@@ -96,7 +96,7 @@ export function renderArticlePage(a, all) {
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>${esc(a.name)} ― VOICE OF PRESIDENT</title>
+<title>${esc(a.title)}｜${esc(a.name)}（${esc(a.company)}） ― VOICE OF PRESIDENT</title>
 <meta name="description" content="${esc(a.excerpt || a.subtitle)}">
 ${articleHead(a)}
 <link rel="preconnect" href="https://fonts.googleapis.com">
