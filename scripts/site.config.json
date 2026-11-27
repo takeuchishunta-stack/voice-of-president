@@ -1,0 +1,106 @@
+{
+  "_note": "検索向けの部品（canonical・OGP・構造化データ・sitemap・関連記事・姉妹導線・GA4）の設定。siteUrl は独自ドメインに移ったらここを変える",
+  "siteUrl": "https://voice-of-president.vercel.app",
+  "siteName": "VOICE OF PRESIDENT",
+  "tagline": "経営者に、聞く。",
+  "description": "地域と業界を支える経営者に、事業の始まりと決断の理由を聞くインタビューメディア。",
+  "publisher": "VOICE OF PRESIDENT 編集部",
+  "operator": "",
+  "_operator_note": "外部送信の公表ページに出す運営者名と問い合わせ先。竹内さんに確かめて入れる。空なら publisher を出す",
+  "analytics": {
+    "_note": "GA4 の測定ID（G-から始まる）。空ならタグを出さない。ビルド時の環境変数 GA4_ID があればそちらを優先。4サイト共通の1つの GA4 に送り media_id で見分ける",
+    "ga4MeasurementId": "",
+    "mediaId": "vop"
+  },
+  "canonicalPending": {
+    "_note": "11/25 雄也さんの決定（J-1 A）：同じ取材先が ATHLETE BRIDGE／Medical Voices にも載っている記事は、そちらを正のサイトにする。ただし向こうに記事ごとのURLができるまでは canonical を張らず、sitemap にも入れない。向こうの記事URLができたら、ここを { \"id\": \"正のURL\" } の形にして canonical をそのURLへ向ける",
+    "ids": [
+      "yokoyama",
+      "irokawa",
+      "mizobuchi",
+      "hara",
+      "saito",
+      "seino",
+      "endo",
+      "masumoto",
+      "satomi",
+      "matsuoka",
+      "aonuma",
+      "takahashi",
+      "takei"
+    ]
+  },
+  "related": {
+    "_note": "関連記事を手で選ぶ時はここに（id: [id, ...]）。足りない分は業種のタグ→公開日の近さで埋める。11/27 周の記録の候補から",
+    "fukugami": [
+      "hiraoka",
+      "yokoyama",
+      "hara"
+    ],
+    "hiraoka": [
+      "fukugami",
+      "yokoyama",
+      "masumoto"
+    ],
+    "mochizuki": [
+      "konaka",
+      "igarashi",
+      "satotakuto"
+    ],
+    "haga": [
+      "konaka",
+      "yokoyamanaotake",
+      "satotakuto"
+    ],
+    "yokoyamanaotake": [
+      "konaka",
+      "igarashi",
+      "haga"
+    ],
+    "konaka": [
+      "yokoyamanaotake",
+      "haga",
+      "mochizuki"
+    ],
+    "igarashi": [
+      "takehi",
+      "satotakuto",
+      "suzuki"
+    ],
+    "kiyama": [
+      "takei",
+      "takehi",
+      "igarashi"
+    ],
+    "takehi": [
+      "takei",
+      "kiyama",
+      "igarashi"
+    ],
+    "suzuki": [
+      "satotakuto",
+      "endo",
+      "igarashi"
+    ],
+    "satotakuto": [
+      "suzuki",
+      "endo",
+      "igarashi"
+    ],
+    "kuramochi": [
+      "gunji",
+      "imanishi",
+      "konaka"
+    ],
+    "gunji": [
+      "kuramochi",
+      "imanishi",
+      "haga"
+    ],
+    "imanishi": [
+      "kuramochi",
+      "gunji",
+      "satomi"
+    ]
+  }
+}

@@ -9,6 +9,7 @@ import path from 'node:path';
 import { ROOT, openDb } from './lib.mjs';
 import { renderArticlePage } from './render-article.mjs';
 import { renderArchivePage } from './render-archive.mjs';
+import { sitemapXml, robotsTxt, privacyPage } from './seo.mjs';
 
 const db = openDb();
 
@@ -46,7 +47,7 @@ const articlesDir = path.join(ROOT, 'articles');
 if (fs.existsSync(articlesDir)) fs.rmSync(articlesDir, { recursive: true });
 fs.mkdirSync(articlesDir, { recursive: true });
 for (const a of articles) {
-  fs.writeFileSync(path.join(articlesDir, `${a.id}.html`), renderArticlePage(a), 'utf8');
+  fs.writeFileSync(path.join(articlesDir, `${a.id}.html`), renderArticlePage(a, articles), 'utf8');
 }
 console.log(`Wrote ${articles.length} article pages to articles/`);
 
@@ -92,5 +93,11 @@ for (const a of articles) {
 legacyLines.push('];');
 fs.writeFileSync(path.join(ROOT, 'articles-data.js'), legacyLines.join('\n') + '\n', 'utf8');
 console.log('Refreshed articles-data.js');
+
+// --- sitemap.xml / robots.txt / privacy.html（Furutori 追加：検索向け） --------
+fs.writeFileSync(path.join(ROOT, 'sitemap.xml'), sitemapXml(articles), 'utf8');
+fs.writeFileSync(path.join(ROOT, 'robots.txt'), robotsTxt(), 'utf8');
+fs.writeFileSync(path.join(ROOT, 'privacy.html'), privacyPage(), 'utf8');
+console.log('Wrote sitemap.xml, robots.txt, privacy.html');
 
 db.close();

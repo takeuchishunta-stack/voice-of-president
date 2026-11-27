@@ -1,6 +1,7 @@
 // Ported 1:1 from article.js's client-side renderer, so statically generated
 // article pages are pixel-identical to the previous client-rendered ones.
 import { esc } from './lib.mjs';
+import { articleHead, articleAfterBody, trackScript } from './seo.mjs';
 
 // Image paths are stored root-relative ("images/foo.jpg"). Article pages are
 // served one level deep (/articles/<id>), so they need a leading slash to
@@ -48,7 +49,7 @@ function renderProfile(a, prof) {
     </div>`;
 }
 
-export function renderArticleBody(a) {
+export function renderArticleBody(a, all) {
   const profBlock = a.blocks.find(b => b.type === 'prof');
   return `
       <div style="position:relative; display:grid; grid-template-columns:1fr 480px; min-height:620px; background:#FFFFFF;">
@@ -75,9 +76,9 @@ export function renderArticleBody(a) {
         </div>
         <div></div>
       </div>
-
+${all ? articleAfterBody(a, all) : ''}
       <div style="margin:88px 0 0; border-top:1px solid rgba(27,22,20,.12); display:grid; grid-template-columns:1fr 420px; background:#FFFFFF;">
-        <a href="/articles/${esc(a.next.id)}" style="padding:52px 56px; display:flex; flex-direction:column; gap:16px; justify-content:center; color:inherit; min-width:0;">
+        <a href="/articles/${esc(a.next.id)}" class="vop-next" style="padding:52px 56px; display:flex; flex-direction:column; gap:16px; justify-content:center; color:inherit; min-width:0;">
           <span style="font-family:'Cormorant Garamond',serif; font-size:12px; letter-spacing:.32em; color:#B08A4A; white-space:nowrap;">NEXT INTERVIEW ／ VOL.${esc(a.next.vol)}</span>
           <h3 style="margin:0; font-family:'Shippori Mincho',serif; font-size:28px; font-weight:400; line-height:1.7; letter-spacing:.06em;">${esc(a.next.title)}</h3>
           <span style="font-size:12.5px; letter-spacing:.12em; color:rgba(27,22,20,.55);">${esc(a.next.company)} ／ ${esc(a.next.name)}</span>
@@ -89,7 +90,7 @@ export function renderArticleBody(a) {
     `;
 }
 
-export function renderArticlePage(a) {
+export function renderArticlePage(a, all) {
   return `<!DOCTYPE html>
 <html lang="ja">
 <head>
@@ -97,6 +98,7 @@ export function renderArticlePage(a) {
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>${esc(a.name)} ― VOICE OF PRESIDENT</title>
 <meta name="description" content="${esc(a.excerpt || a.subtitle)}">
+${articleHead(a)}
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@400;600;800&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300&family=Zen+Kaku+Gothic+New:wght@300;400;500&display=swap" rel="stylesheet">
@@ -107,7 +109,7 @@ export function renderArticlePage(a) {
   @keyframes vopKb { from { transform:scale(1.03); } to { transform:scale(1.12); } }
 </style>
 </head>
-<body>
+<body data-media="vop" data-article="${esc(a.id)}">
 
 <section style="padding:0; display:flex; flex-direction:column; font-family:'Zen Kaku Gothic New',sans-serif; background:#F7F4EF; overflow-x:hidden;">
   <div id="vop-scaler" style="width:1240px; transform-origin:top left; margin:0 auto;">
@@ -127,7 +129,7 @@ export function renderArticlePage(a) {
       </div>
     </header>
 
-    <main id="vop-article">${renderArticleBody(a)}</main>
+    <main id="vop-article">${renderArticleBody(a, all)}</main>
 
     <div style="display:flex; justify-content:center; gap:36px; padding:52px 0 76px; font-size:12.5px; letter-spacing:.2em; background:#F7F4EF;">
       <a href="/archive" style="display:inline-flex; align-items:center; white-space:nowrap; color:#FFFFFF; background:#8E1D22; padding:17px 30px;">連載一覧へ戻る</a>
@@ -136,7 +138,7 @@ export function renderArticlePage(a) {
 
     <footer style="padding:34px 56px; background:#8E1D22; display:flex; justify-content:space-between; align-items:center; font-size:11.5px; letter-spacing:.16em; color:rgba(255,248,243,.72);">
       <a href="/" style="font-family:'Cormorant Garamond',serif; letter-spacing:.3em; font-size:13px; color:#FFF8F3;">VOICE OF PRESIDENT</a>
-      <span style="display:flex; gap:26px; white-space:nowrap;"><span>プライバシーポリシー</span><span>© 2026</span></span>
+      <span style="display:flex; gap:26px; white-space:nowrap;"><a href="/privacy" style="color:inherit;">外部送信について</a><span>© 2026</span></span>
     </footer>
 
   </div>
@@ -164,6 +166,7 @@ export function renderArticlePage(a) {
   document.addEventListener('DOMContentLoaded', setupScale);
 })();
 </script>
+${trackScript()}
 <script defer src="/_vercel/insights/script.js"></script>
 </body>
 </html>

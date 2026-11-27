@@ -1,4 +1,5 @@
 import { esc } from './lib.mjs';
+import { pageHead, CFG } from './seo.mjs';
 
 // `articles` is newest-first (sort_order ascending). `industryTags` is a list of
 // { label, count } sorted by frequency then label, used to build the filter chips.
@@ -25,6 +26,7 @@ export function renderArchivePage(articles, industryTags) {
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>連載一覧 ― VOICE OF PRESIDENT</title>
 <meta name="description" content="VOICE OF PRESIDENTのインタビュー記事一覧。業種やお名前で絞り込み、気になる経営者の歩みを探せます。">
+${pageHead({ url: CFG.siteUrl + '/archive', title: '連載一覧 ― VOICE OF PRESIDENT', description: 'VOICE OF PRESIDENTのインタビュー記事一覧。業種やお名前で絞り込み、気になる経営者の歩みを探せます。', image: articles[0] ? CFG.siteUrl + '/' + articles[0].photo : '' })}
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@400;600;800&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300&family=Zen+Kaku+Gothic+New:wght@300;400;500&display=swap" rel="stylesheet">
@@ -84,7 +86,7 @@ export function renderArchivePage(articles, industryTags) {
 
     <footer style="padding:34px 56px; background:#8E1D22; display:flex; justify-content:space-between; align-items:center; font-size:11.5px; letter-spacing:.16em; color:rgba(255,248,243,.72);">
       <a href="/" style="font-family:'Cormorant Garamond',serif; letter-spacing:.3em; font-size:13px; color:#FFF8F3;">VOICE OF PRESIDENT</a>
-      <span style="display:flex; gap:26px; white-space:nowrap;"><span>プライバシーポリシー</span><span>© 2026</span></span>
+      <span style="display:flex; gap:26px; white-space:nowrap;"><a href="/privacy" style="color:inherit;">外部送信について</a><span>© 2026</span></span>
     </footer>
 
   </div>
