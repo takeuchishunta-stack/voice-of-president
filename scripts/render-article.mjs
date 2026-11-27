@@ -1,7 +1,7 @@
 // Ported 1:1 from article.js's client-side renderer, so statically generated
 // article pages are pixel-identical to the previous client-rendered ones.
 import { esc } from './lib.mjs';
-import { articleHead, articleAfterBody, trackScript } from './seo.mjs';
+import { articleHead, articleAfterBody, trackScript, seoTitle } from './seo.mjs';
 
 // Image paths are stored root-relative ("images/foo.jpg"). Article pages are
 // served one level deep (/articles/<id>), so they need a leading slash to
@@ -96,7 +96,7 @@ export function renderArticlePage(a, all) {
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>${esc(a.title)}｜${esc(a.name)}（${esc(a.company)}） ― VOICE OF PRESIDENT</title>
+<title>${esc(seoTitle(a))} ― VOICE OF PRESIDENT</title>
 <meta name="description" content="${esc(a.excerpt || a.subtitle)}">
 ${articleHead(a)}
 <link rel="preconnect" href="https://fonts.googleapis.com">

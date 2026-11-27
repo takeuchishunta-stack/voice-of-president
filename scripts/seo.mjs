@@ -17,6 +17,10 @@ const isoDate = d => String(d).replace(/\./g, '-') + 'T09:00:00+09:00';
 const jsonLd = o => `<script type="application/ld+json">${JSON.stringify(o).replace(/</g, '\\u003c')}</script>`;
 const normName = s => String(s).replace(/[\s　]/g, '');
 
+const NEUTRAL = new Set((CFG.neutralTitle || {}).ids || []);
+// 検索結果・SNSのカードに出す題。医療機関の記事は医療広告ガイドラインに配慮し、発言を切り出さない中立な形にする
+export const seoTitle = a => NEUTRAL.has(a.id) ? `${a.name}（${a.company}）${a.role}インタビュー` : `${a.title}｜${a.name}（${a.company}）`;
+
 export const hasCanonical = a => !PENDING.has(a.id);
 
 // GA4：測定ID が空なら何も出さない。ID があっても本番のドメインで開いた時だけ読み込む（プレビューでは数えない）
@@ -48,7 +52,7 @@ ${ga4Tag()}`;
 export function articleHead(a) {
   const url = articleUrl(a);
   const img = absUrl(a.photo);
-  const title = `${a.title}｜${a.name}（${a.company}）`;
+  const title = seoTitle(a);
   const desc = a.excerpt || a.subtitle;
   const ld = [{
     '@context': 'https://schema.org',
@@ -62,14 +66,6 @@ export function articleHead(a) {
     publisher: { '@type': 'Organization', name: CFG.siteName, url: SITE + '/' },
     mainEntityOfPage: url,
     about: { '@type': 'Person', name: a.name, jobTitle: a.role, worksFor: { '@type': 'Organization', name: a.company } },
-  }, {
-    '@context': 'https://schema.org',
-    '@type': 'BreadcrumbList',
-    itemListElement: [
-      { '@type': 'ListItem', position: 1, name: CFG.siteName, item: SITE + '/' },
-      { '@type': 'ListItem', position: 2, name: '連載一覧', item: SITE + '/archive' },
-      { '@type': 'ListItem', position: 3, name: `${a.name}さん`, item: url },
-    ],
   }];
   return `${hasCanonical(a) ? `<link rel="canonical" href="${esc(url)}">\n` : ''}<meta name="robots" content="max-image-preview:large">
 <meta property="og:type" content="article">
@@ -91,8 +87,8 @@ export function relatedOf(a, all, n = 3) {
   const mine = new Set(a.industries);
   const idx = all.indexOf(a);
   const byId = new Map(all.map(b => [b.id, b]));
-  const picked = ((CFG.related || {})[a.id] || []).map(id => byId.get(id)).filter(b => b && b !== a && b.id !== a.next.id);
-  return [...picked, ...all.filter(b => b !== a && b.id !== a.next.id && !picked.includes(b))
+  const picked = ((CFG.related || {})[a.id] || []).map(id => byId.get(id)).filter(b => b && b !== a && b.id !== a.next.id && !PENDING.has(b.id));
+  return [...picked, ...all.filter(b => b !== a && b.id !== a.next.id && !picked.includes(b) && !PENDING.has(b.id))
     .map(b => ({ b, s: b.industries.filter(t => mine.has(t)).length * 100 - Math.abs(all.indexOf(b) - idx) }))
     .sort((x, y) => y.s - x.s).map(x => x.b)].slice(0, n);
 }
@@ -113,7 +109,7 @@ const H = `font-family:'Cormorant Garamond',serif; font-size:12px; letter-spacin
 // 本文の後ろ（NEXT INTERVIEW の前）に入れる回遊の部品。見た目は竹内さんのページの色と書体にそろえる
 export function articleAfterBody(a, all) {
   const url = articleUrl(a);
-  const shareText = `${a.title}｜${a.name}さん（${a.company}）`;
+  const shareText = seoTitle(a);
   const enc = encodeURIComponent;
   const btn = `display:inline-flex; align-items:center; padding:11px 20px; border:1px solid rgba(27,22,20,.2); font-size:12.5px; letter-spacing:.12em; color:#1B1614; background:#FFFFFF; white-space:nowrap; cursor:pointer; font-family:'Zen Kaku Gothic New',sans-serif;`;
   const share = `<div class="vop-share" style="display:flex; align-items:center; gap:12px; flex-wrap:wrap;">
@@ -140,7 +136,7 @@ export function articleAfterBody(a, all) {
             <span style="display:block; height:170px; overflow:hidden;"><img src="/${esc(String(b.photo).replace(/^\//, ''))}" alt="" loading="lazy" style="width:100%; height:100%; object-fit:cover; object-position:50% 15%;"></span>
             <span style="padding:14px 14px 16px; display:flex; flex-direction:column; gap:8px;">
               <span style="font-size:10.5px; letter-spacing:.1em; color:#B08A4A;">VOL.${esc(b.vol)}　${esc(b.industries.join(' / '))}</span>
-              <span style="font-family:'Shippori Mincho',serif; font-size:15px; font-weight:600; line-height:1.65; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; min-height:3.3em;">${esc(b.title)}</span>
+              <span style="font-family:'Shippori Mincho',serif; font-size:15px; font-weight:600; line-height:1.65; display:-webkit-box; -webkit-line-clamp:3; -webkit-box-orient:vertical; overflow:hidden; min-height:4.95em;">${esc(b.title)}</span>
               <span style="font-size:11px; color:rgba(27,22,20,.55);">${esc(b.company)} ／ ${esc(b.name)}</span>
             </span>
           </a>`).join('')}
@@ -150,7 +146,7 @@ export function articleAfterBody(a, all) {
   const nets = NET.sites.map(s => `<a href="${esc(s.url)}" data-dest="${esc(s.media_id)}" style="display:flex; flex-direction:column; gap:6px; padding:18px 20px; border:1px solid rgba(27,22,20,.12); color:#1B1614; min-width:0;"><span style="font-family:'Cormorant Garamond',serif; font-size:15px; letter-spacing:.16em; color:#8E1D22;">${esc(s.name)}</span><span style="font-size:11.5px; line-height:1.7; color:rgba(27,22,20,.6); min-height:3.4em;">${esc(s.desc)}</span><span style="font-size:11px; letter-spacing:.14em; color:#8E1D22;">サイトを見る →</span></a>`).join('');
   const netHtml = `<div class="vop-net" style="margin-top:64px;">
           <span style="${H}">SISTER MEDIA</span>
-          <div style="margin-top:16px; display:grid; grid-template-columns:repeat(3, 1fr); gap:16px;">${nets}</div>
+          <div style="margin-top:16px; display:grid; grid-template-columns:repeat(3, 1fr); gap:22px;">${nets}</div>
         </div>`;
 
   return `
